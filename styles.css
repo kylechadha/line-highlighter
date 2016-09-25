@@ -15,3 +15,12 @@
 	margin-left: 0px;
 	background-color: #C6C600;
 }
+
+#controls {
+	width: 260px;
+}
+
+#controls span {
+	font-family: courier;
+	color: #222222;
+}

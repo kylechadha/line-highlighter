@@ -1,3 +1,13 @@
+//
+//  --------------------------------------------------------
+//     Welcome to the 'Line Highlighter' Chrome Extension
+//  --------------------------------------------------------
+//
+//   Created by Kyle Chadha
+//   www.kylechadha.com
+//   @kylechadha
+//
+
 $(document).ready(function() {
     "use strict";
 
@@ -20,16 +30,16 @@ $(document).ready(function() {
 			console.log(e.keyCode);
 
 			switch(e.keyCode) {
-			    case 71: // g
+			    case 70: // g
 			    	$('#line-marker').css('top', currentPosition - currentHeight);
 			        break;
-			    case 66: // b
+			    case 86: // b
 			    	$('#line-marker').css('top', currentPosition + currentHeight);
 			        break;
-			    case 70: // f
+			    case 71: // f
 			    	$('#line-marker').css('top', currentPosition - 1);
 			        break;
-			    case 86: // v
+			    case 66: // v
 			    	$('#line-marker').css('top', currentPosition + 1);
 			        break;
 			    case 74: // j

@@ -1,0 +1,21 @@
+{
+  "manifest_version": 2,
+
+  "name": "Line Highlighter",
+  "description": "This extension creates a full width yellow line wherever you click. There's also a blinking cursor so you can follow along while you read.",
+  "version": "1.0",
+  "homepage_url": "http://kylechadha.com",
+
+  "background": {
+    "persistent": true,
+    "scripts": ["bg.js"]
+  },
+
+  "browser_action": {
+   "default_icon": "icon.png",
+   "default_popup": "popup.html"
+  },
+  "permissions": [
+   "activeTab"
+   ]
+}
