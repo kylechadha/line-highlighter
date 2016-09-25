@@ -1,0 +1,103 @@
+<html>
+	<head>
+		<link rel="stylesheet" href="styles.css">
+
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+		<script type="text/javascript" src="main.js"></script>
+	</head>
+	<body>
+	<div id="line-marker">
+		<div id="cursor"></div>
+	</div>
+
+	<h4>File Structure Related System Calls</h4>
+
+	<p>
+		The file structure related system calls available in the UNIX system let
+	you create, open, and close files, read and write files, randomly access
+	files, alias and remove files, get information about files, check the
+	accessibility of files, change protections, owner, and group of files,
+	and control devices.  These operations either use a character string
+	that defines the absolute or relative path name of a file, or a small
+	integer called a file descriptor that identifies the I/O channel.  A
+	channel is a connection between a process and a file that appears to the
+	process as an unformatted stream of bytes.  The kernel presents and
+	accepts data from the channel as a process reads and writes that
+	channel.  To a process then, all input and output operations are
+	synchronous and unbuffered.
+	</p>
+
+	<p>
+	When doing I/O, a process specifies the file descriptor for an I/O
+	channel, a buffer to be filled or emptied, and the maximum size of data
+	to be transferred.  An I/O channel may allow input, output, or both.
+	Furthermore, each channel has a read/write pointer.  Each I/O operation
+	starts where the last operation finished and advances the pointer by the
+	number of bytes transferred.  A process can access a channel's data
+	randomly by changing the read/write pointer.
+	</p>
+
+	<p>
+	All input and output operations start by opening a file using either the
+	"creat()" or "open()" system calls.  These calls return a file
+	descriptor that identifies the I/O channel.  Recall that file
+	descriptors 0, 1, and 2 refer to standard input, standard output, and
+	standard error files respectively, and that file descriptor 0 is a
+	channel to your terminal's keyboard and file descriptors 1 and 2 are
+	channels to your terminal's display screen.
+	</p>
+	
+	<pre>
+	 creat()
+	</pre>
+	<p>
+	 The prototype for the creat() system call is:
+	</p>
+	<pre>
+	 int creat(file_name, mode)
+	 char *file_name;
+	 int mode;
+	</pre>
+
+	<p>
+	 where file_name is pointer to a null terminated character string that
+	 names the file and mode defines the file's access permissions.  The mode
+	 is usually specified as an octal number such as 0666 that would mean
+	 read/write permission for owner, group, and others or the mode may also
+	 be entered using manifest constants defined in the
+	 "/usr/include/sys/stat.h" file.  If the file named by file_name does not
+	 exist, the UNIX system creates it with the specified mode permissions.
+	 However, if the file does exist, its contents are discarded and the mode
+	 value is ignored.  The permissions of the existing file are retained.
+	 Following is an example of how to use creat():
+	</p>
+	<pre>
+	 /*  creat.c */
+	
+	 #include <stdio.h>
+	 #include <sys/types.h>        /* defines types used by sys/stat.h */
+	 #include <sys/stat.h>         /* defines S_IREAD & S_IWRITE       */
+
+	 int main()
+	 {
+	    int fd;
+	    fd = creat("datafile.dat", S_IREAD | S_IWRITE);
+	    if (fd == -1)
+	       printf("Error in opening datafile.dat\n");
+	    else
+	       {
+	       printf("datafile.dat opened for read/write access\n");
+	       printf("datafile.dat is currently empty\n");
+	       }
+	    close(fd);
+	    exit (0);
+	 }
+	</pre>
+
+	<p>
+	 The following is a sample of the manifest constants for the mode
+	 argument as defined in /usr/include/sys/stat.h:
+	</p>
+
+	</body>
+</html>
