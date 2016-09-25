@@ -17,6 +17,8 @@ $(document).ready(function() {
 		var cursorPosition = parseInt($('#cursor').css('left'), 10)
 
 		if ($('#line-marker').css('display') == "block") {
+			console.log(e.keyCode);
+
 			switch(e.keyCode) {
 			    case 71: // g
 			    	$('#line-marker').css('top', currentPosition - currentHeight);
@@ -43,6 +45,9 @@ $(document).ready(function() {
 			        break;
 			    case 79: // o
 			    	$('#cursor').css('left', cursorPosition + 20);
+			        break;
+			    case 67: // c
+			    	$('#cursor').toggle();
 			        break;
 			}
 		}
