@@ -1,12 +1,12 @@
 {
   "manifest_version": 2,
   "name": "Line Highlighter",
-  "description": "This extension creates a full width yellow line wherever you click. There's also a blinking cursor so you can follow along while you read.",
+  "description": "This extension highlights your current position on any website. Helpful when reading text online -- always know where you are.",
   "homepage_url": "http://kylechadha.com",
-  "version": "1.0",
+  "version": "0.1",
   "content_scripts": [
     {
-      "matches": ["http://*/*"],
+      "matches": ["http://*/*", "https://*/*"],
       "js": ["jquery.min.js", "content-script.js"],
       "css": ["styles.css"]
     }

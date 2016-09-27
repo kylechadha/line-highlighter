@@ -11,6 +11,8 @@
 $(document).ready(function() {
 	"use strict";
 
+	console.log("Line Highlighter loading.")
+
 	$("body").append('<div id="line-marker"><div id="cursor"></div></div>')
 
 	var enabled = false;
