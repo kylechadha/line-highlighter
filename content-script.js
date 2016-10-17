@@ -17,6 +17,8 @@ $(document).ready(function() {
 
 	var enabled = false;
 	var first = true;
+	var currentPosition, currentHeight, cursorPosition;
+
 	$('html').click(function(e) {
 		if (!enabled) {
 			return;
@@ -27,53 +29,57 @@ $(document).ready(function() {
 			first = false;
 		}
 
-		$('#line-marker').css('display', 'block').css('top', e.pageY);
+		$('#line-marker').css('display', 'block').css('top', e.pageY - currentHeight/2);
 	});
 
 	$('html').keydown(function(e) {
-		if (e.keyCode == 69) { // e keypress
-			enabled = !enabled;
-			$('#line-marker').toggle();
-			// * Could clear the cursor Interval here and set first to true again. Meh.
+		if (e.ctrlKey || e.metaKey) {
+			switch (String.fromCharCode(e.which).toLowerCase()) {
+				case 'e':
+					enabled = !enabled;
+					$('#line-marker').toggle();
+					// * Could clear the cursor Interval here and set first to true again. Meh.
+					break;
+			 }
 		}
 
 		if (!enabled) {
 			return;
 		}
 
-		var currentPosition = parseInt($('#line-marker').css('top'), 10);
-		var currentHeight = parseInt($('#line-marker').css('height'), 10);
-		var cursorPosition = parseInt($('#cursor').css('left'), 10);
+		currentPosition = parseInt($('#line-marker').css('top'), 10);
+		currentHeight = parseInt($('#line-marker').css('height'), 10);
+		cursorPosition = parseInt($('#cursor').css('left'), 10);
 
-		switch(e.keyCode) {
-			case 70: // g keypress
+		switch(String.fromCharCode(e.which).toLowerCase()) {
+			case 'f':
 				$('#line-marker').css('top', currentPosition - currentHeight);
 				break;
-			case 86: // b keypress
+			case 'v':
 				$('#line-marker').css('top', currentPosition + currentHeight);
 				break;
-			case 71: // f keypress
-				$('#line-marker').css('top', currentPosition - 1);
+			case 'd':
+				$('#line-marker').css('top', currentPosition - 2);
 				break;
-			case 66: // v keypress
-				$('#line-marker').css('top', currentPosition + 1);
+			case 'c':
+				$('#line-marker').css('top', currentPosition + 2);
 				break;
-			case 74: // j keypress
+			case 'j':
 				$('#line-marker').css('height', currentHeight + 1);
 				fixCursorHeight();
 				break;
-			case 78: // n keypress
+			case 'n':
 				$('#line-marker').css('height', currentHeight - 1);
 				fixCursorHeight();
 				break;
-			case 73: // i keypress
+			case 'g':
+				$('#cursor').toggle();
+				break;
+			case 'i':
 				$('#cursor').css('left', cursorPosition - 20);
 				break;
-			case 79: // o keypress
+			case 'o':
 				$('#cursor').css('left', cursorPosition + 20);
-				break;
-			case 67: // c keypress
-				$('#cursor').toggle();
 				break;
 		}
 	});
