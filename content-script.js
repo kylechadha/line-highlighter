@@ -8,16 +8,18 @@
 //   @kylechadha
 //
 
+// ** TODOs
+// - Investigate why setInterval isn't blinking consistently
+// - Attach/deattach click handler based on enable/disable
+// - Add toast notifications to let the user know the line highlighter has been enabled
+// - Add toast notifications to show cursor controls on first use
+// - Check all cursor controls work
+
 $(document).ready(function() {
 	"use strict";
 
-	console.log("Line Highlighter loading.")
-
-	$("body").append('<div id="line-marker"><div id="cursor"></div></div>')
-
 	var enabled = false;
 	var first = true;
-	var currentPosition, currentHeight, cursorPosition;
 
 	$('html').click(function(e) {
 		if (!enabled) {
@@ -25,11 +27,13 @@ $(document).ready(function() {
 		}
 
 		if (first) {
+			console.log('Line Highlighter: Created with <3 by Kyle Chadha @kylechadha');
 			setInterval ('cursorBlink()', 1000);
 			first = false;
 		}
 
-		$('#line-marker').css('display', 'block').css('top', e.pageY - currentHeight/2);
+		$('#line-marker').css('display', 'block').css('top', e.pageY - parseInt($('#line-marker').css('height'), 10)/2);
+		$('#cursor').css('left', e.pageX - parseInt($('#line-marker').css('left'), 10) - parseInt($('#cursor').css('width'), 10)/2);
 	});
 
 	$('html').keydown(function(e) {
@@ -37,9 +41,12 @@ $(document).ready(function() {
 			switch (String.fromCharCode(e.which).toLowerCase()) {
 				case 'e':
 					enabled = !enabled;
-					$('#line-marker').toggle();
-					// * Could clear the cursor Interval here and set first to true again. Meh.
-					break;
+					if (enabled) {
+						$("body").append('<div id="line-marker"><div id="cursor"></div></div>');
+					} else {
+						$('#line-marker').remove();
+					}
+					return;
 			 }
 		}
 
@@ -47,9 +54,10 @@ $(document).ready(function() {
 			return;
 		}
 
-		currentPosition = parseInt($('#line-marker').css('top'), 10);
-		currentHeight = parseInt($('#line-marker').css('height'), 10);
-		cursorPosition = parseInt($('#cursor').css('left'), 10);
+		var currentHeight = parseInt($('#line-marker').css('height'), 10);
+		var currentPosition = parseInt($('#line-marker').css('top'), 10);
+		var cursorPosition = parseInt($('#cursor').css('left'), 10);
+		var cursorWidth = parseInt($('#cursor').css('width'), 10);
 
 		switch(String.fromCharCode(e.which).toLowerCase()) {
 			case 'f':
@@ -66,20 +74,20 @@ $(document).ready(function() {
 				break;
 			case 'j':
 				$('#line-marker').css('height', currentHeight + 1);
-				fixCursorHeight();
+				$('#cursor').css('height', currentHeight + 1);
 				break;
 			case 'n':
 				$('#line-marker').css('height', currentHeight - 1);
-				fixCursorHeight();
+				$('#cursor').css('height', currentHeight - 1);
 				break;
 			case 'g':
 				$('#cursor').toggle();
 				break;
 			case 'i':
-				$('#cursor').css('left', cursorPosition - 20);
+				$('#cursor').css('left', cursorPosition - cursorWidth);
 				break;
 			case 'o':
-				$('#cursor').css('left', cursorPosition + 20);
+				$('#cursor').css('left', cursorPosition + cursorWidth);
 				break;
 		}
 	});
@@ -91,9 +99,4 @@ var cursorBlink = function() {
 	}, 'fast', 'swing').animate({
 		opacity: 1
 	}, 'fast', 'swing');
-};
-
-var fixCursorHeight = function() {
-	var lineMarkerHeight = parseInt($('#line-marker').css('height'), 10);
-	$('#cursor').css('height', lineMarkerHeight - 4);
 };

@@ -1,9 +1,9 @@
 {
   "manifest_version": 2,
   "name": "Line Highlighter",
-  "description": "This extension highlights your current position on any website. Helpful when reading text online -- always know where you are.",
+  "description": "This extension highlights your current position on any website. Helpful when reading text online -- keep track of where you are on the page.",
   "homepage_url": "http://kylechadha.com",
-  "version": "0.1",
+  "version": "1.0",
   "content_scripts": [
     {
       "matches": ["http://*/*", "https://*/*"],
@@ -17,6 +17,6 @@
    "default_title": "Line Highlighter"
   },
   "permissions": [
-   "activeTab"
+    "activeTab"
    ]
 }
