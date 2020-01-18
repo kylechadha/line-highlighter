@@ -10,9 +10,11 @@
 	display: none;
 	background-color: yellow;
 	mix-blend-mode: multiply;
+	pointer-events: none;
 }
 
 #cursor {
+	display: none;
 	position: relative;
 	width: 11px;
 	height: var(--default-height);

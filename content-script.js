@@ -8,13 +8,6 @@
 //   @kylechadha
 //
 
-// ** TODOs
-// - Investigate why setInterval isn't blinking consistently
-// - Attach/deattach click handler based on enable/disable
-// - Add toast notifications to let the user know the line highlighter has been enabled
-// - Add toast notifications to show cursor controls on first use
-// - Check all cursor controls work
-
 $(document).ready(function() {
 	"use strict";
 
@@ -28,7 +21,7 @@ $(document).ready(function() {
 
 		if (first) {
 			console.log('Line Highlighter: Created with <3 by Kyle Chadha @kylechadha');
-			setInterval ('cursorBlink()', 1000);
+			cursorBlink();
 			first = false;
 		}
 
@@ -99,4 +92,5 @@ var cursorBlink = function() {
 	}, 'fast', 'swing').animate({
 		opacity: 1
 	}, 'fast', 'swing');
+	setTimeout('cursorBlink()', 1000);
 };

@@ -3,7 +3,7 @@
   "name": "Line Highlighter",
   "description": "This extension highlights your current position on any website. Helpful when reading text online -- keep track of where you are on the page.",
   "homepage_url": "http://kylechadha.com",
-  "version": "1.0",
+  "version": "1.1",
   "content_scripts": [
     {
       "matches": ["http://*/*", "https://*/*"],
