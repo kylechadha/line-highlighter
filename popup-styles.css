@@ -5,92 +5,114 @@
 }
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-  width: 380px;
-  background: #ffffff;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', system-ui, sans-serif;
+  width: 320px;
+  background: #fff;
+  color: #000;
 }
 
-#controls {
-  padding: 20px;
+.container {
+  padding: 24px;
 }
 
-h3 {
-  font-size: 18px;
-  color: #1a1a1a;
+header {
+  text-align: center;
+  margin-bottom: 28px;
+}
+
+h1 {
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
   margin-bottom: 4px;
 }
 
-h4 {
+.tagline {
   font-size: 13px;
-  color: #333;
+  color: #666;
+  font-weight: 400;
+}
+
+h2 {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #999;
   margin-bottom: 12px;
   margin-top: 20px;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  font-weight: 600;
 }
 
-.subtitle {
-  color: #666;
-  font-size: 13px;
-  margin-bottom: 20px;
-}
-
-.section {
-  margin-bottom: 24px;
-}
-
-.section:first-of-type h4 {
+.shortcut-group:first-child h2 {
   margin-top: 0;
 }
 
-.control-item {
+.shortcut {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   margin-bottom: 10px;
-  font-size: 13px;
-  color: #444;
-  line-height: 1.5;
+  min-height: 24px;
 }
 
-.control-item p {
-  margin-top: 4px;
-  color: #666;
+.keys {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  min-width: 80px;
 }
 
 kbd {
   display: inline-block;
-  padding: 3px 6px;
+  padding: 2px 6px;
   font-family: 'SF Mono', Monaco, 'Courier New', monospace;
-  font-size: 11px;
-  line-height: 1;
-  color: #444;
-  background-color: #f4f4f4;
-  border: 1px solid #d1d1d1;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.4;
+  color: #000;
+  background: #f3f3f3;
+  border: 1px solid #d4d4d4;
+  border-bottom: 2px solid #d4d4d4;
   border-radius: 3px;
-  box-shadow: 0 1px 0 rgba(0,0,0,0.1);
+  white-space: nowrap;
+}
+
+.plus {
+  font-size: 12px;
+  color: #999;
   margin: 0 2px;
 }
 
-.platform {
-  color: #999;
-  font-size: 11px;
-  margin-left: 4px;
+.action {
+  font-size: 13px;
+  color: #333;
+  text-align: right;
+  flex: 1;
 }
 
-.hint {
+.instruction {
+  font-size: 12px;
   color: #666;
   font-style: italic;
-  font-size: 12px;
-  padding: 8px 0;
+  width: 100%;
+  text-align: center;
+  padding: 4px 0;
 }
 
-.footer {
+footer {
   margin-top: 24px;
-  padding-top: 16px;
-  border-top: 1px solid #e0e0e0;
+  padding-top: 20px;
+  border-top: 1px solid #e5e5e5;
   text-align: center;
 }
 
-.footer p {
-  color: #999;
-  font-size: 11px;
+footer a {
+  font-size: 12px;
+  color: #666;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+footer a:hover {
+  color: #000;
 }
