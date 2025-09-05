@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Line Highlighter",
-  "description": "Smart reading assistant that highlights your current position on any website.",
+  "description": "Smart reading assistant that highlights your current line on any website, allowing you to keep track of where you are with ease.",
   "homepage_url": "http://kylechadha.com",
   "version": "2.0.0",
   "content_scripts": [

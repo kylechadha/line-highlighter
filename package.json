@@ -1,7 +1,7 @@
 {
   "name": "line-highlighter",
   "version": "2.0.0",
-  "description": "Chrome extension that highlights your current reading position on any website",
+  "description": "Chrome extension that is a smart reading assistant that highlights your current line on any website, allowing you to keep track of where you are with ease",
   "author": "Kyle Chadha",
   "license": "MIT",
   "scripts": {
