@@ -23,9 +23,8 @@ Click on any text to highlight that line with a yellow bar. Use keyboard shortcu
 | `Ctrl/Cmd + E` | Enable/disable Line Highlighter |
 | `F` or `↑` | Move to previous line |
 | `V` or `↓` | Move to next line |
-| `D` / `C` | Fine-tune position (up/down by 2px) |
-| `J` / `N` | Adjust line height |
 | `G` | Toggle cursor visibility |
+| `I` / `O` | Move cursor left/right |
 
 ## Technical Implementation
 

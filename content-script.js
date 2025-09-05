@@ -33,7 +33,7 @@
       pointer-events: none;
       z-index: 2147483647;
       display: none;
-      transition: top 0.2s ease-out, height 0.1s ease-out;
+      transition: top 0.1s ease-out;
     `;
     
     cursor = document.createElement('div');
@@ -208,10 +208,18 @@
     
     if (!currentLine || !currentLine.element) return;
     
-    // Get the parent container
+    // Get the parent container - go higher up to catch all content
     let container = currentLine.element;
-    while (container && container.parentElement && !isMainContent(container)) {
+    let attempts = 0;
+    while (container && container.parentElement && !isMainContent(container) && attempts < 10) {
       container = container.parentElement;
+      attempts++;
+    }
+    
+    // If we're in an article, make sure we get the whole article
+    const article = container.closest('article');
+    if (article) {
+      container = article;
     }
     
     // Find all text nodes in the container
@@ -228,6 +236,11 @@
           
           const style = window.getComputedStyle(parent);
           if (style.display === 'none' || style.visibility === 'hidden') {
+            return NodeFilter.FILTER_REJECT;
+          }
+          
+          // Skip if parent is script or style
+          if (parent.tagName === 'SCRIPT' || parent.tagName === 'STYLE') {
             return NodeFilter.FILTER_REJECT;
           }
           
@@ -299,7 +312,7 @@
 
   function isMainContent(element) {
     const tag = element.tagName?.toLowerCase();
-    return ['article', 'main', 'body', 'section', 'div'].includes(tag);
+    return ['article', 'main', 'body', 'section'].includes(tag);
   }
 
   function positionHighlighter(lineInfo) {
@@ -353,18 +366,6 @@
     }
   }
 
-  function adjustLineHeight(delta) {
-    if (!highlighter) return;
-    
-    const currentHeight = parseInt(highlighter.style.height) || 24;
-    const newHeight = Math.max(10, Math.min(100, currentHeight + delta));
-    
-    highlighter.style.height = `${newHeight}px`;
-    if (cursor) {
-      cursor.style.height = '100%';
-    }
-  }
-
   function handleKeydown(e) {
     // Toggle with Ctrl/Cmd + E
     if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'e') {
@@ -397,32 +398,6 @@
       case 'arrowdown':
         e.preventDefault();
         moveToLine('down');
-        break;
-        
-      case 'd':
-        e.preventDefault();
-        if (highlighter) {
-          const top = parseInt(highlighter.style.top) || 0;
-          highlighter.style.top = `${top - 2}px`;
-        }
-        break;
-        
-      case 'c':
-        e.preventDefault();
-        if (highlighter) {
-          const top = parseInt(highlighter.style.top) || 0;
-          highlighter.style.top = `${top + 2}px`;
-        }
-        break;
-        
-      case 'j':
-        e.preventDefault();
-        adjustLineHeight(2);
-        break;
-        
-      case 'n':
-        e.preventDefault();
-        adjustLineHeight(-2);
         break;
         
       case 'g':
