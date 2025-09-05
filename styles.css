@@ -1,3 +1,6 @@
+/* Legacy styles - kept for compatibility but no longer used */
+/* The extension now creates styles dynamically in JavaScript */
+
 :root {
   --default-height: 20px;
 }
@@ -19,13 +22,4 @@
 	width: 11px;
 	height: var(--default-height);
 	background-color: #C6C600;
-}
-
-#controls {
-	width: 400px;
-}
-
-#controls span {
-	font-family: courier;
-	color: #222222;
 }

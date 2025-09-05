@@ -1,20 +1,55 @@
 <!doctype html>
 <html>
-	<head>
-		<title>Line Highlighter Chrome Extension</title>
-
-		<link rel="stylesheet" href="styles.css">
-	</head>
-	<body>
-		<div id="controls">
-			<h4>Controls</h4>
-			<span>ctrl + e <b>(windows)</b></span> : enable / disable line-highlighter<br>
-			<span>cmd + e <b>(mac)</b></span> : enable / disable line-highlighter<br>
-			<span>f</span> / <span>v</span> : fast move the line up / down (default 20px)<br>
-			<span>d</span> / <span>c</span> : slow move the line up / down (2px)<br>
-			<span>j</span> / <span>n</span> : increase / decrease the height of the line<br>
-			<span>g</span> : hide / show the cursor<br>
-			<span>i</span> / <span>o</span> : move the cursor to the left / right<br>
+<head>
+	<title>Line Highlighter</title>
+	<link rel="stylesheet" href="popup-styles.css">
+</head>
+<body>
+	<div id="controls">
+		<h3>Line Highlighter</h3>
+		<p class="subtitle">Smart reading assistant</p>
+		
+		<div class="section">
+			<h4>Getting Started</h4>
+			<div class="control-item">
+				<kbd>Ctrl</kbd> + <kbd>E</kbd> <span class="platform">(Windows/Linux)</span>
+				<kbd>Cmd</kbd> + <kbd>E</kbd> <span class="platform">(Mac)</span>
+				<p>Enable/disable highlighter</p>
+			</div>
+			<div class="control-item">
+				<p class="hint">Click on any text to highlight that line</p>
+			</div>
 		</div>
-	</body>
+		
+		<div class="section">
+			<h4>Smart Navigation</h4>
+			<div class="control-item">
+				<kbd>F</kbd> / <kbd>↑</kbd> &nbsp; Move to previous line
+			</div>
+			<div class="control-item">
+				<kbd>V</kbd> / <kbd>↓</kbd> &nbsp; Move to next line
+			</div>
+			<div class="control-item">
+				<kbd>D</kbd> / <kbd>C</kbd> &nbsp; Fine-tune position (up/down)
+			</div>
+		</div>
+		
+		<div class="section">
+			<h4>Customization</h4>
+			<div class="control-item">
+				<kbd>J</kbd> / <kbd>N</kbd> &nbsp; Adjust line height
+			</div>
+			<div class="control-item">
+				<kbd>G</kbd> &nbsp; Toggle cursor visibility
+			</div>
+			<div class="control-item">
+				<kbd>I</kbd> / <kbd>O</kbd> &nbsp; Move cursor left/right
+			</div>
+		</div>
+		
+		<div class="footer">
+			<p>v2.0 • Smart line detection</p>
+		</div>
+	</div>
+</body>
 </html>
