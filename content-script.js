@@ -6,7 +6,8 @@
     currentLineElement: null,
     currentLineRect: null,
     textLines: [],
-    currentLineIndex: -1
+    currentLineIndex: -1,
+    currentPageY: 0  // Track absolute page position
   };
 
   let highlighter = null;
@@ -23,9 +24,9 @@
     highlighter = document.createElement('div');
     highlighter.id = 'line-highlighter-marker';
     highlighter.style.cssText = `
-      position: fixed;
+      position: absolute;
       left: 0;
-      width: 100vw;
+      width: 100%;
       height: 24px;
       background-color: yellow;
       mix-blend-mode: multiply;
@@ -79,21 +80,23 @@
       return;
     }
     
-    const lineInfo = detectLineAtPoint(e.clientX, e.clientY);
+    // Use pageY for absolute positioning
+    const lineInfo = detectLineAtPoint(e.clientX, e.clientY, e.pageX, e.pageY);
     if (lineInfo) {
+      state.currentPageY = lineInfo.pageY;
       positionHighlighter(lineInfo);
       findNearbyLines(lineInfo);
-      updateCursorPosition(e.clientX);
+      updateCursorPosition(e.pageX);
     }
   }
 
-  function detectLineAtPoint(x, y) {
-    // Try caretPositionFromPoint first (better browser support)
+  function detectLineAtPoint(clientX, clientY, pageX, pageY) {
+    // Try caretPositionFromPoint first
     let caretPos = null;
     if (document.caretPositionFromPoint) {
-      caretPos = document.caretPositionFromPoint(x, y);
+      caretPos = document.caretPositionFromPoint(clientX, clientY);
     } else if (document.caretRangeFromPoint) {
-      const range = document.caretRangeFromPoint(x, y);
+      const range = document.caretRangeFromPoint(clientX, clientY);
       if (range) {
         caretPos = {
           offsetNode: range.startContainer,
@@ -102,72 +105,98 @@
       }
     }
     
-    if (!caretPos || !caretPos.offsetNode) {
-      // Fallback: find element at point
-      const element = document.elementFromPoint(x, y);
-      if (element && element.textContent) {
-        return getElementLineInfo(element, y);
+    // If we got a caret position, use it
+    if (caretPos && caretPos.offsetNode) {
+      const textNode = caretPos.offsetNode.nodeType === Node.TEXT_NODE 
+        ? caretPos.offsetNode 
+        : caretPos.offsetNode.childNodes[caretPos.offset];
+      
+      if (textNode && textNode.nodeType === Node.TEXT_NODE) {
+        // Create a range for just the clicked line
+        const range = document.createRange();
+        range.selectNodeContents(textNode);
+        
+        // Get all line rectangles for this text node
+        const rects = Array.from(range.getClientRects());
+        
+        // Find the specific line that was clicked
+        for (const rect of rects) {
+          if (clientY >= rect.top && clientY <= rect.bottom && 
+              clientX >= rect.left && clientX <= rect.right) {
+            return {
+              rect: rect,
+              node: textNode,
+              element: textNode.parentElement,
+              pageY: pageY - clientY + rect.top + rect.height / 2
+            };
+          }
+        }
       }
-      return null;
     }
     
-    // Get the text node
-    const textNode = caretPos.offsetNode.nodeType === Node.TEXT_NODE 
-      ? caretPos.offsetNode 
-      : caretPos.offsetNode.childNodes[caretPos.offset];
-    
-    if (!textNode || textNode.nodeType !== Node.TEXT_NODE) {
-      return getElementLineInfo(caretPos.offsetNode, y);
-    }
-    
-    // Create a range for the entire text node to find line boundaries
-    const range = document.createRange();
-    range.selectNodeContents(textNode);
-    
-    // Get all client rects (one per line)
-    const rects = Array.from(range.getClientRects());
-    
-    // Find which rect contains our y coordinate
-    for (const rect of rects) {
-      if (y >= rect.top && y <= rect.bottom) {
+    // Fallback: find the closest text element
+    const element = document.elementFromPoint(clientX, clientY);
+    if (element && element.textContent && element.textContent.trim()) {
+      // For inline elements, try to get specific line
+      const range = document.createRange();
+      range.selectNodeContents(element);
+      const rects = Array.from(range.getClientRects());
+      
+      // Find closest line rect
+      let closestRect = null;
+      let minDistance = Infinity;
+      
+      for (const rect of rects) {
+        const distance = Math.abs(clientY - (rect.top + rect.height / 2));
+        if (distance < minDistance) {
+          minDistance = distance;
+          closestRect = rect;
+        }
+      }
+      
+      if (closestRect && minDistance < 50) { // Within 50px of a line
         return {
-          rect: rect,
-          node: textNode,
-          element: textNode.parentElement
+          rect: closestRect,
+          node: element,
+          element: element,
+          pageY: pageY - clientY + closestRect.top + closestRect.height / 2
         };
       }
     }
     
-    // Fallback to element
-    return getElementLineInfo(textNode.parentElement, y);
+    return null;
   }
 
-  function getElementLineInfo(element, y) {
+  function getElementLineInfo(element, clientY, pageY) {
     if (!element) return null;
     
-    // For block elements with text, try to find the specific line
-    const range = document.createRange();
-    range.selectNodeContents(element);
-    
-    const rects = Array.from(range.getClientRects());
-    for (const rect of rects) {
-      if (y >= rect.top && y <= rect.bottom) {
-        return {
-          rect: rect,
-          node: element,
-          element: element
-        };
+    // Get all text nodes within this element
+    const walker = document.createTreeWalker(
+      element,
+      NodeFilter.SHOW_TEXT,
+      {
+        acceptNode: (node) => {
+          return node.textContent.trim() ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT;
+        }
       }
-    }
+    );
     
-    // If no specific line found, use element's bounding rect
-    const rect = element.getBoundingClientRect();
-    if (rect.height > 0) {
-      return {
-        rect: rect,
-        node: element,
-        element: element
-      };
+    let textNode;
+    while (textNode = walker.nextNode()) {
+      const range = document.createRange();
+      range.selectNodeContents(textNode);
+      const rects = Array.from(range.getClientRects());
+      
+      for (const rect of rects) {
+        if (clientY >= rect.top && clientY <= rect.bottom) {
+          return {
+            rect: rect,
+            node: textNode,
+            element: textNode.parentElement,
+            pageY: pageY - clientY + rect.top + rect.height / 2
+          };
+        }
+      }
     }
     
     return null;
@@ -221,33 +250,49 @@
       const rects = Array.from(range.getClientRects());
       
       for (const rect of rects) {
-        if (rect.height > 5 && rect.width > 20) {
+        if (rect.height > 5 && rect.height < 100 && rect.width > 20) {
+          // Calculate absolute page position
+          const pageTop = window.pageYOffset + rect.top;
           allLines.push({
             rect: rect,
             node: textNode,
             element: textNode.parentElement,
-            top: rect.top
+            top: rect.top,
+            pageTop: pageTop
           });
         }
       }
     }
     
     // Sort by vertical position
-    allLines.sort((a, b) => a.top - b.top);
+    allLines.sort((a, b) => a.pageTop - b.pageTop);
     
     // Remove duplicates (lines at same position)
     state.textLines = allLines.filter((line, index) => {
       if (index === 0) return true;
       const prev = allLines[index - 1];
-      return Math.abs(line.top - prev.top) > 2;
+      return Math.abs(line.pageTop - prev.pageTop) > 2;
     });
     
     // Find current line index
+    const currentPageTop = window.pageYOffset + currentLine.rect.top;
     for (let i = 0; i < state.textLines.length; i++) {
       const line = state.textLines[i];
-      if (Math.abs(line.top - currentLine.rect.top) < 2) {
+      if (Math.abs(line.pageTop - currentPageTop) < 5) {
         state.currentLineIndex = i;
         break;
+      }
+    }
+    
+    // If we didn't find exact match, find closest
+    if (state.currentLineIndex === -1 && state.textLines.length > 0) {
+      let minDistance = Infinity;
+      for (let i = 0; i < state.textLines.length; i++) {
+        const distance = Math.abs(state.textLines[i].pageTop - currentPageTop);
+        if (distance < minDistance) {
+          minDistance = distance;
+          state.currentLineIndex = i;
+        }
       }
     }
   }
@@ -263,18 +308,18 @@
     const rect = lineInfo.rect;
     state.currentLineRect = rect;
     
-    highlighter.style.top = `${rect.top}px`;
+    // Use absolute positioning with pageY
+    const pageTop = window.pageYOffset + rect.top;
+    highlighter.style.top = `${pageTop}px`;
     highlighter.style.height = `${rect.height}px`;
     highlighter.style.display = 'block';
   }
 
-  function updateCursorPosition(x) {
+  function updateCursorPosition(pageX) {
     if (!cursor || !highlighter) return;
     
-    const highlighterRect = highlighter.getBoundingClientRect();
-    const relativeX = x - highlighterRect.left;
-    
-    cursor.style.left = `${Math.max(0, Math.min(relativeX, highlighterRect.width - 3))}px`;
+    // Since highlighter is full width, just use pageX directly
+    cursor.style.left = `${Math.max(0, Math.min(pageX, window.innerWidth - 3))}px`;
   }
 
   function moveToLine(direction) {
@@ -291,7 +336,11 @@
     if (newIndex !== state.currentLineIndex && state.textLines[newIndex]) {
       state.currentLineIndex = newIndex;
       const lineInfo = state.textLines[newIndex];
-      positionHighlighter(lineInfo);
+      
+      // Position using absolute page coordinates
+      highlighter.style.top = `${lineInfo.pageTop}px`;
+      highlighter.style.height = `${lineInfo.rect.height}px`;
+      highlighter.style.display = 'block';
       
       // Scroll if necessary
       const rect = lineInfo.rect;
