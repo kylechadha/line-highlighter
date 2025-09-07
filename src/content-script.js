@@ -56,15 +56,15 @@
     }
     
     // Use pageY for absolute positioning
-    const lineInfo = detectLineAtPoint(e.clientX, e.clientY, e.pageX, e.pageY);
+    const lineInfo = findLineAtClick(e.clientX, e.clientY, e.pageX, e.pageY);
     if (lineInfo) {
       state.currentPageY = lineInfo.pageY;
       positionHighlighter(lineInfo);
-      findNearbyLines(lineInfo);
+      scanTextLinesNearby(lineInfo);
     }
   }
 
-  function detectLineAtPoint(clientX, clientY, pageX, pageY) {
+  function findLineAtClick(clientX, clientY, pageX, pageY) {
     // Try caretPositionFromPoint first
     let caretPos = null;
     if (document.caretPositionFromPoint) {
@@ -176,7 +176,7 @@
     return null;
   }
 
-  function findNearbyLines(currentLine) {
+  function scanTextLinesNearby(currentLine) {
     state.textLines = [];
     state.currentLineIndex = -1;
     
@@ -311,7 +311,7 @@
   }
 
 
-  function moveToLine(direction) {
+  function navigateToLine(direction) {
     if (state.textLines.length === 0) return;
     
     let newIndex = state.currentLineIndex;
@@ -375,12 +375,12 @@
     switch(e.key.toLowerCase()) {
       case 'f':
         e.preventDefault();
-        moveToLine('up');
+        navigateToLine('up');
         break;
         
       case 'v':
         e.preventDefault();
-        moveToLine('down');
+        navigateToLine('down');
         break;
     }
   }

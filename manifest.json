@@ -7,19 +7,14 @@
   "content_scripts": [
     {
       "matches": ["http://*/*", "https://*/*"],
-      "js": ["content-script.js"],
-      "css": ["styles.css"]
+      "js": ["src/content-script.js"]
     }
   ],
   "action": {
-    "default_icon": "icon.png",
-    "default_popup": "popup.html",
+    "default_popup": "src/popup.html",
     "default_title": "Line Highlighter"
   },
   "permissions": [
     "activeTab"
-  ],
-  "icons": {
-    "128": "icon.png"
-  }
+  ]
 }
