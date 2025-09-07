@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Line Highlighter",
-  "description": "Lose track of how far you've read on a web page? Line Highlighter is a Chrome extension that highlights your current position on any website, allowing you to easily keep track of where you are. The highlighter snaps to text and allows you to easily move through the page",
+  "description": "Line Highlighter highlights your current position on any website, allowing you to easily keep track of where you are",
   "homepage_url": "https://github.com/kylechadha/line-highlighter",
   "version": "2.0.0",
   "content_scripts": [
