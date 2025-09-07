@@ -1,8 +1,8 @@
 # Line Highlighter
 
-Lose track of how far you've read on a web page? Line Highlighter is a Chrome extension that highlights your current position on any website, allowing you to keep track of where you are.
+Lose track of how far you've read on a web page? Line Highlighter is a Chrome extension that highlights your current position on any website, allowing you to easily keep track of where you are. The highlighter snaps to text and allows you to easily move through the page.
 
-![Line Highlighter Demo](demo.gif)
+<img src="demo.gif" alt="Line Highlighter Demo" width="400">
 
 ## How It Works
 

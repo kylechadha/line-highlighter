@@ -33,7 +33,7 @@
       pointer-events: none;
       z-index: 2147483647;
       display: none;
-      transition: top 0.1s ease-out;
+      transition: top 0.18s cubic-bezier(0.25, 0.46, 0.45, 0.94), height 0.18s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 0.18s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.15s ease-out;
     `;
     
     document.body.appendChild(highlighter);
@@ -297,7 +297,7 @@
     return ['article', 'main', 'body', 'section'].includes(tag);
   }
 
-  function positionHighlighter(lineInfo) {
+  function positionHighlighter(lineInfo, animate = false) {
     if (!highlighter || !lineInfo) return;
     
     const rect = lineInfo.rect;
@@ -305,6 +305,17 @@
     
     // Use absolute positioning with pageY
     const pageTop = window.pageYOffset + rect.top;
+    
+    // Add subtle scale and fade effects during animation
+    if (animate) {
+      highlighter.style.transform = 'scaleY(1.02)';
+      highlighter.style.opacity = '0.7';
+      setTimeout(() => {
+        highlighter.style.transform = 'scaleY(1)';
+        highlighter.style.opacity = '1';
+      }, 150);
+    }
+    
     highlighter.style.top = `${pageTop}px`;
     highlighter.style.height = `${rect.height}px`;
     highlighter.style.display = 'block';
@@ -326,10 +337,21 @@
       state.currentLineIndex = newIndex;
       const lineInfo = state.textLines[newIndex];
       
-      // Position using absolute page coordinates
-      highlighter.style.top = `${lineInfo.pageTop}px`;
-      highlighter.style.height = `${lineInfo.rect.height}px`;
-      highlighter.style.display = 'block';
+      // Position using absolute page coordinates with animation
+      if (highlighter) {
+        // Add subtle scale and fade effects
+        highlighter.style.transform = 'scaleY(1.02)';
+        highlighter.style.opacity = '0.7';
+        
+        setTimeout(() => {
+          highlighter.style.transform = 'scaleY(1)';
+          highlighter.style.opacity = '1';
+        }, 150);
+        
+        highlighter.style.top = `${lineInfo.pageTop}px`;
+        highlighter.style.height = `${lineInfo.rect.height}px`;
+        highlighter.style.display = 'block';
+      }
       
       // Scroll if necessary - only if line is not fully visible
       const rect = lineInfo.rect;
