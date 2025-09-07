@@ -1,1 +1,8 @@
 .idea
+node_modules/
+.DS_Store
+*.log
+test-results/
+playwright-report/
+playwright/.cache/
+build/
