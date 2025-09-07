@@ -4,15 +4,13 @@ Chrome extension that is a smart reading assistant that highlights your current 
 
 ## Features
 
-- **Smart Line Detection**: Automatically detects and highlights the exact line of text you click on
-- **Intelligent Navigation**: Move between actual lines of text with keyboard shortcuts
-- **Clean Interface**: Minimal, distraction-free yellow highlight that blends naturally with any page
-- **Scroll-Independent**: Highlight stays with text when you scroll
+- **Smart Line Detection**: Automatically detects and highlights the line of text you click on
+- **Intelligent Navigation**: Move between lines of text on a page with keyboard shortcuts
 - **No Dependencies**: Pure vanilla JavaScript, lightweight and fast
 
 ## How It Works
 
-Click on any text to highlight that line with a yellow bar. Use keyboard shortcuts to navigate between lines or fine-tune the position. Perfect for reading long articles, documentation, or keeping your place during interruptions.
+Click on any text to highlight that line with a yellow bar. Then use keyboard shortcuts to navigate between lines. Perfect for reading long articles, documentation, or anywhere else you might want to keep your place during interruptions.
 
 ![Line Highlighter Demo](demo.gif)
 
@@ -21,22 +19,20 @@ Click on any text to highlight that line with a yellow bar. Use keyboard shortcu
 | Shortcut | Action |
 |----------|--------|
 | `Ctrl/Cmd + E` | Enable/disable Line Highlighter |
-| `F` or `↑` | Move to previous line |
-| `V` or `↓` | Move to next line |
-| `G` | Toggle cursor visibility |
-| `I` / `O` | Move cursor left/right |
+| `F` | Move to previous line |
+| `V` | Move to next line |
+| `C` | Toggle cursor visibility |
+| `K` / `L` | Move cursor left/right |
 
 ## Technical Implementation
 
-Line Highlighter uses a sophisticated algorithm to accurately detect and track individual lines of text:
-
-### Line Detection Algorithm
+Line Highlighter uses the following algorithm to accurately detect and track individual lines of text:
 
 1. **Click Position Analysis**: When you click, the extension uses `caretPositionFromPoint()` or `caretRangeFromPoint()` to identify the exact text node and character offset at the click coordinates.
 
 2. **Line Boundary Detection**: Once a text node is identified, the extension creates a `Range` object around it and calls `getClientRects()`. This returns a collection of `DOMRect` objects, one for each visual line the text spans.
 
-3. **Line Matching**: The algorithm iterates through the rectangles to find which one contains the click coordinates, ensuring we highlight the exact line clicked, not the entire paragraph.
+3. **Line Matching**: The algorithm iterates through the rectangles to find which one contains the click coordinates, ensuring we highlight the line clicked, not the entire paragraph.
 
 4. **Fallback Strategy**: If caret position APIs aren't available or return null (common with certain CSS layouts), the extension falls back to:
    - Using `elementFromPoint()` to find the nearest text element
@@ -45,7 +41,7 @@ Line Highlighter uses a sophisticated algorithm to accurately detect and track i
 
 ### Navigation System
 
-1. **Text Tree Walking**: The extension uses `TreeWalker` API to efficiently traverse all text nodes in the reading area, filtering out hidden elements and empty text.
+1. **Text Tree Walking**: The extension uses `TreeWalker` API to traverse all text nodes in the reading area, filtering out hidden elements and empty text.
 
 2. **Line Collection**: For each text node, it:
    - Creates a range and gets all line rectangles
@@ -58,17 +54,6 @@ Line Highlighter uses a sophisticated algorithm to accurately detect and track i
    - Updates the highlighter position using absolute page coordinates
    - Automatically scrolls if the target line is near viewport edges
    - Uses smooth scrolling for better reading experience
-
-### Position Persistence
-
-The highlighter uses `position: absolute` with page coordinates rather than `position: fixed` with viewport coordinates. This ensures the highlight stays with the text when scrolling, solving a common issue with simpler implementations.
-
-### Edge Case Handling
-
-- **Whitespace Clicks**: Returns null if no text found within 50px
-- **Multi-column Layouts**: Deduplicates lines at same vertical position
-- **Dynamic Content**: Recalculates line positions on each navigation
-- **Variable Line Heights**: Adapts to different text sizes within the same document
 
 ---
 

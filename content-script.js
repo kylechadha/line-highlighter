@@ -7,7 +7,8 @@
     currentLineRect: null,
     textLines: [],
     currentLineIndex: -1,
-    currentPageY: 0  // Track absolute page position
+    currentPageY: 0,  // Track absolute page position
+    cursorPosition: 0  // Track cursor position
   };
 
   let highlighter = null;
@@ -40,11 +41,14 @@
     cursor.id = 'line-highlighter-cursor';
     cursor.style.cssText = `
       position: absolute;
-      width: 3px;
+      width: 1ch;
       height: 100%;
-      background-color: #C6C600;
+      border: 2px solid #C6C600;
+      background-color: rgba(198, 198, 0, 0.3);
       display: none;
       animation: blink 1s infinite;
+      pointer-events: none;
+      box-sizing: border-box;
     `;
     
     highlighter.appendChild(cursor);
@@ -331,8 +335,39 @@
   function updateCursorPosition(pageX) {
     if (!cursor || !highlighter) return;
     
-    // Since highlighter is full width, just use pageX directly
-    cursor.style.left = `${Math.max(0, Math.min(pageX, window.innerWidth - 3))}px`;
+    // Position cursor at click location initially
+    state.cursorPosition = pageX;
+    cursor.style.left = `${Math.max(0, Math.min(pageX, window.innerWidth - 20))}px`;
+  }
+  
+  function moveCursor(direction) {
+    if (!cursor || !highlighter || cursor.style.display === 'none') return;
+    
+    const charWidth = 10; // Approximate character width
+    const currentLeft = parseInt(cursor.style.left) || 0;
+    
+    if (direction === 'left') {
+      const newLeft = Math.max(0, currentLeft - charWidth);
+      cursor.style.left = `${newLeft}px`;
+      
+      // If we're at the beginning of the line, move to previous line
+      if (newLeft === 0 && state.currentLineIndex > 0) {
+        moveToLine('up');
+        // Position cursor at end of the new line
+        cursor.style.left = `${window.innerWidth - 20}px`;
+      }
+    } else {
+      const newLeft = currentLeft + charWidth;
+      
+      // If we're past the window width, move to next line
+      if (newLeft >= window.innerWidth - 20 && state.currentLineIndex < state.textLines.length - 1) {
+        moveToLine('down');
+        // Position cursor at beginning of the new line
+        cursor.style.left = '0px';
+      } else {
+        cursor.style.left = `${Math.min(newLeft, window.innerWidth - 20)}px`;
+      }
+    }
   }
 
   function moveToLine(direction) {
@@ -389,38 +424,30 @@
     // Handle navigation keys
     switch(e.key.toLowerCase()) {
       case 'f':
-      case 'arrowup':
         e.preventDefault();
         moveToLine('up');
         break;
         
       case 'v':
-      case 'arrowdown':
         e.preventDefault();
         moveToLine('down');
         break;
         
-      case 'g':
+      case 'c':
         e.preventDefault();
         if (cursor) {
           cursor.style.display = cursor.style.display === 'none' ? 'block' : 'none';
         }
         break;
         
-      case 'i':
+      case 'k':
         e.preventDefault();
-        if (cursor) {
-          const left = parseInt(cursor.style.left) || 0;
-          cursor.style.left = `${Math.max(0, left - 10)}px`;
-        }
+        moveCursor('left');
         break;
         
-      case 'o':
+      case 'l':
         e.preventDefault();
-        if (cursor) {
-          const left = parseInt(cursor.style.left) || 0;
-          cursor.style.left = `${left + 10}px`;
-        }
+        moveCursor('right');
         break;
     }
   }
