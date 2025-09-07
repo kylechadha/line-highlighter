@@ -2,19 +2,11 @@
 
 Lose track of how far you've read on a web page? Line Highlighter is a Chrome extension that highlights your current position on any website, allowing you to keep track of where you are.
 
-## Features
-
-- **Smart Line Detection**: Automatically detects and highlights the line of text you click on
-- **Intelligent Navigation**: Move between lines of text on a page with keyboard shortcuts
-- **No Dependencies**: Pure vanilla JavaScript, lightweight and fast
+![Line Highlighter Demo](demo.gif)
 
 ## How It Works
 
-Click on any text to highlight that line with a yellow bar. Then use keyboard shortcuts to navigate between lines. Perfect for reading long articles, documentation, or anywhere else you might want to keep your place during interruptions.
-
-![Line Highlighter Demo](demo.gif)
-
-## Keyboard Shortcuts
+Press 'ctrl+e' on windows or 'cmd+e' on mac to activate the highlighter and then click on any text on the page. Once you see the highlighter, you can move down or up line by line by pressing 'f' and 'v'.
 
 | Shortcut | Action |
 |----------|--------|
@@ -22,9 +14,15 @@ Click on any text to highlight that line with a yellow bar. Then use keyboard sh
 | `F` | Move to previous line |
 | `V` | Move to next line |
 
+## Features
+
+- **Smart Line Detection**: Automatically detects and highlights the line of text you click on
+- **Intelligent Navigation**: Move between lines of text on a page with keyboard shortcuts
+- **No Dependencies**: Pure vanilla JavaScript, lightweight and fast
+
 ## Technical Implementation
 
-Line Highlighter uses the following algorithm to accurately detect and track individual lines of text:
+Line Highlighter uses the following algorithm to detect and track individual lines of text:
 
 1. **Click Position Analysis**: When you click, the extension uses `caretPositionFromPoint()` or `caretRangeFromPoint()` to identify the exact text node and character offset at the click coordinates.
 
