@@ -21,8 +21,6 @@ Click on any text to highlight that line with a yellow bar. Then use keyboard sh
 | `Ctrl/Cmd + E` | Enable/disable Line Highlighter |
 | `F` | Move to previous line |
 | `V` | Move to next line |
-| `C` | Toggle cursor visibility |
-| `K` / `L` | Move cursor left/right |
 
 ## Technical Implementation
 

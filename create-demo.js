@@ -28,7 +28,7 @@ async function createDemo() {
   const page = await context.newPage();
   
   // Navigate to a demo article
-  await page.goto('https://www.bbc.com/news/articles/c0mzdj1n303o');
+  await page.goto('https://www.bbc.com/news/articles/cn0xe5dvp47o');
   await page.waitForTimeout(2000);
 
   // Enable the extension

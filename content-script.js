@@ -12,7 +12,6 @@
   };
 
   let highlighter = null;
-  let cursor = null;
 
   function init() {
     document.addEventListener('click', handleClick);
@@ -37,42 +36,14 @@
       transition: top 0.1s ease-out;
     `;
     
-    cursor = document.createElement('div');
-    cursor.id = 'line-highlighter-cursor';
-    cursor.style.cssText = `
-      position: absolute;
-      width: 1ch;
-      height: 100%;
-      border: 2px solid #C6C600;
-      background-color: rgba(198, 198, 0, 0.3);
-      display: none;
-      animation: blink 1s infinite;
-      pointer-events: none;
-      box-sizing: border-box;
-    `;
-    
-    highlighter.appendChild(cursor);
     document.body.appendChild(highlighter);
     
-    // Add blink animation
-    if (!document.getElementById('line-highlighter-styles')) {
-      const style = document.createElement('style');
-      style.id = 'line-highlighter-styles';
-      style.textContent = `
-        @keyframes blink {
-          0%, 50% { opacity: 1; }
-          51%, 100% { opacity: 0; }
-        }
-      `;
-      document.head.appendChild(style);
-    }
   }
 
   function removeHighlighter() {
     if (highlighter) {
       highlighter.remove();
       highlighter = null;
-      cursor = null;
     }
   }
 
@@ -90,7 +61,6 @@
       state.currentPageY = lineInfo.pageY;
       positionHighlighter(lineInfo);
       findNearbyLines(lineInfo);
-      updateCursorPosition(e.pageX);
     }
   }
 
@@ -270,12 +240,20 @@
         if (rect.height > 5 && rect.height < 100 && rect.width > 20) {
           // Calculate absolute page position
           const pageTop = window.pageYOffset + rect.top;
+          
+          // Get the actual text content for this line to determine its real width
+          const textContent = textNode.textContent;
+          const textLength = textContent.trim().length;
+          
           allLines.push({
             rect: rect,
             node: textNode,
             element: textNode.parentElement,
             top: rect.top,
-            pageTop: pageTop
+            pageTop: pageTop,
+            left: rect.left,
+            width: rect.width,
+            textLength: textLength
           });
         }
       }
@@ -332,43 +310,6 @@
     highlighter.style.display = 'block';
   }
 
-  function updateCursorPosition(pageX) {
-    if (!cursor || !highlighter) return;
-    
-    // Position cursor at click location initially
-    state.cursorPosition = pageX;
-    cursor.style.left = `${Math.max(0, Math.min(pageX, window.innerWidth - 20))}px`;
-  }
-  
-  function moveCursor(direction) {
-    if (!cursor || !highlighter || cursor.style.display === 'none') return;
-    
-    const charWidth = 10; // Approximate character width
-    const currentLeft = parseInt(cursor.style.left) || 0;
-    
-    if (direction === 'left') {
-      const newLeft = Math.max(0, currentLeft - charWidth);
-      cursor.style.left = `${newLeft}px`;
-      
-      // If we're at the beginning of the line, move to previous line
-      if (newLeft === 0 && state.currentLineIndex > 0) {
-        moveToLine('up');
-        // Position cursor at end of the new line
-        cursor.style.left = `${window.innerWidth - 20}px`;
-      }
-    } else {
-      const newLeft = currentLeft + charWidth;
-      
-      // If we're past the window width, move to next line
-      if (newLeft >= window.innerWidth - 20 && state.currentLineIndex < state.textLines.length - 1) {
-        moveToLine('down');
-        // Position cursor at beginning of the new line
-        cursor.style.left = '0px';
-      } else {
-        cursor.style.left = `${Math.min(newLeft, window.innerWidth - 20)}px`;
-      }
-    }
-  }
 
   function moveToLine(direction) {
     if (state.textLines.length === 0) return;
@@ -390,11 +331,20 @@
       highlighter.style.height = `${lineInfo.rect.height}px`;
       highlighter.style.display = 'block';
       
-      // Scroll if necessary
+      // Scroll if necessary - only if line is not fully visible
       const rect = lineInfo.rect;
-      if (rect.top < 50 || rect.bottom > window.innerHeight - 50) {
-        window.scrollBy({
-          top: rect.top - window.innerHeight / 2,
+      const scrollTop = window.pageYOffset;
+      const viewportTop = scrollTop;
+      const viewportBottom = scrollTop + window.innerHeight;
+      const lineTop = lineInfo.pageTop;
+      const lineBottom = lineInfo.pageTop + rect.height;
+      
+      // Only scroll if line is not fully visible in viewport
+      if (lineTop < viewportTop + 50 || lineBottom > viewportBottom - 50) {
+        // Calculate scroll to center the line
+        const targetScroll = lineInfo.pageTop - (window.innerHeight / 2);
+        window.scrollTo({
+          top: targetScroll,
           behavior: 'smooth'
         });
       }
@@ -431,23 +381,6 @@
       case 'v':
         e.preventDefault();
         moveToLine('down');
-        break;
-        
-      case 'c':
-        e.preventDefault();
-        if (cursor) {
-          cursor.style.display = cursor.style.display === 'none' ? 'block' : 'none';
-        }
-        break;
-        
-      case 'k':
-        e.preventDefault();
-        moveCursor('left');
-        break;
-        
-      case 'l':
-        e.preventDefault();
-        moveCursor('right');
         break;
     }
   }
