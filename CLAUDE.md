@@ -25,6 +25,18 @@ Line Highlighter is a Chrome extension that helps users track their reading posi
 - Testing requires loading the extension as an unpacked extension in Chrome Developer Mode
 - The extension works on all HTTP/HTTPS sites as defined in the content script matches
 
+## Testing Requirements
+- **IMPORTANT**: Run Playwright tests after every code change to ensure no regressions
+- Test command: `npm test` or `npx playwright test`
+- Tests should include screenshots for visual verification
+- Key test scenarios:
+  - Navigation between lines (f/v keys)
+  - Scrolling behavior (highlighter should stick to text)
+  - Sidebar/breadcrumb exclusion (e.g., GitHub docs pages)
+  - Line height adjustment (j/n keys)
+  - Cursor toggle (g key)
+- When fixing bugs, add specific test cases for the reported issues
+
 ## Keyboard Controls Implementation
 Controls are handled in content-script.js:
 - Enable/disable toggle: ctrl/cmd + e
