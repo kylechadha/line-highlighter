@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Line Highlighter Extension</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        h1 {
+            color: #333;
+        }
+        p {
+            margin: 20px 0;
+            color: #666;
+        }
+        .instructions {
+            background: #f0f0f0;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 30px 0;
+        }
+        .instructions h2 {
+            margin-top: 0;
+        }
+        .instructions ol {
+            margin: 10px 0;
+        }
+        .instructions li {
+            margin: 10px 0;
+        }
+        .test-content {
+            border-left: 4px solid #FFE066;
+            padding-left: 20px;
+            margin: 30px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>Line Highlighter Extension Test Page</h1>
+    
+    <div class="instructions">
+        <h2>Testing Instructions:</h2>
+        <ol>
+            <li>Press <strong>Alt+L</strong> (Option+L on Mac) to enable the highlighter</li>
+            <li>Click on any text line below to highlight it</li>
+            <li>Press <strong>F</strong> to move up one line</li>
+            <li>Press <strong>V</strong> to move down one line</li>
+            <li>Click the extension icon to access settings</li>
+            <li>Try changing colors and keyboard shortcuts in the popup</li>
+        </ol>
+    </div>
+
+    <div class="test-content">
+        <h2>Sample Text for Testing</h2>
+        
+        <p>This is the first paragraph of text. Click on this line to test the highlighter. The yellow highlight should appear behind the text when you click.</p>
+        
+        <p>This is the second paragraph. Try navigating between paragraphs using the F and V keys. The highlighter should smoothly transition between lines.</p>
+        
+        <p>Here's a third paragraph with more content. You can test how the highlighter handles longer text lines that might wrap on smaller screens.</p>
+        
+        <p>This paragraph contains <strong>bold text</strong> and <em>italic text</em> to test how the highlighter works with different text styles.</p>
+        
+        <p>The fifth paragraph is here. Try changing the highlighter color in the extension popup - you have 6 color options to choose from.</p>
+        
+        <p>This is paragraph number six. The extension should remember your color choice and keyboard shortcuts even after you reload the page.</p>
+        
+        <p>Seventh paragraph for testing. Notice how the highlighter stays on top of all other page elements with its high z-index.</p>
+        
+        <p>The eighth and final test paragraph. Press Alt+L again to disable the highlighter when you're done testing.</p>
+    </div>
+
+    <div class="instructions">
+        <h2>Expected Behavior:</h2>
+        <ul>
+            <li>✅ Alt+L should toggle the highlighter on/off</li>
+            <li>✅ Clicking text should position the yellow highlight</li>
+            <li>✅ F/V keys should navigate up/down when highlighter is active</li>
+            <li>✅ Extension icon should show active/inactive state</li>
+            <li>✅ Popup should have working toggle button</li>
+            <li>✅ Color selection should change highlight color</li>
+            <li>✅ Keyboard shortcuts should be customizable</li>
+            <li>✅ No scrollbar should appear in the popup</li>
+        </ul>
+    </div>
+</body>
+</html>

@@ -1,0 +1,19 @@
+<svg width="128" height="128" viewBox="0 0 128 128" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Simple modern highlighter pen (inactive) at 45 degree angle -->
+  <g transform="rotate(45 64 64)">
+    <!-- Main pen body -->
+    <rect x="32" y="16" width="64" height="80" rx="3" fill="#9E9E9E"/>
+    
+    <!-- Grip section -->
+    <rect x="32" y="48" width="64" height="28" rx="2" fill="#757575"/>
+    
+    <!-- Tip holder -->
+    <path d="M 32 96 L 64 112 L 96 96 Z" fill="#616161"/>
+    
+    <!-- Tip -->
+    <rect x="52" y="110" width="24" height="12" fill="#424242"/>
+    
+    <!-- Cap -->
+    <rect x="32" y="8" width="64" height="10" rx="3" fill="#757575"/>
+  </g>
+</svg>

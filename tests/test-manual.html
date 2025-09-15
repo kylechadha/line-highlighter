@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Line Highlighter v2.1</title>
+    <style>
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .test-section {
+            background: #f5f5f5;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+        .status { 
+            padding: 10px; 
+            margin: 10px 0;
+            border-radius: 4px;
+        }
+        .success { background: #d4edda; color: #155724; }
+        .error { background: #f8d7da; color: #721c24; }
+        code {
+            background: #e9ecef;
+            padding: 2px 6px;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Line Highlighter v2.1 Test Page</h1>
+    
+    <div class="test-section">
+        <h2>🧪 Testing Instructions</h2>
+        <ol>
+            <li>Load the extension in Chrome</li>
+            <li>Open DevTools Console to see debug logs</li>
+            <li>Test each feature below</li>
+        </ol>
+    </div>
+
+    <div class="test-section">
+        <h2>✅ Test Checklist</h2>
+        
+        <h3>1. Keyboard Shortcuts</h3>
+        <ul>
+            <li>Press <code>Alt+L</code> (Option+L on Mac) - should toggle highlighter</li>
+            <li>Click on any text below to highlight it</li>
+            <li>Press <code>F</code> to move up, <code>V</code> to move down</li>
+            <li>Open popup and change shortcuts (e.g., to <code>D</code> and <code>C</code>)</li>
+            <li>Verify new shortcuts work immediately</li>
+        </ul>
+
+        <h3>2. Color Selection</h3>
+        <ul>
+            <li>Open popup - default should be bright yellow</li>
+            <li>Select different colors - highlight should change</li>
+            <li>Color labels should be black text below each color</li>
+        </ul>
+
+        <h3>3. Popup UI</h3>
+        <ul>
+            <li>Toggle button should work</li>
+            <li>No scrollbar should appear</li>
+            <li>Reset button should look like a small rounded button</li>
+            <li>Spacing should be balanced top and bottom</li>
+        </ul>
+
+        <h3>4. Icon</h3>
+        <ul>
+            <li>Extension icon should show active/inactive state</li>
+        </ul>
+    </div>
+
+    <div class="test-section">
+        <h2>📝 Test Content</h2>
+        
+        <p>This is the first paragraph. Click here to start highlighting. The highlighter should appear as a bright yellow bar behind this text.</p>
+        
+        <p>This is the second paragraph. Use F and V keys to navigate between these paragraphs. The transition should be smooth.</p>
+        
+        <p>Third paragraph here. Try changing the color in the popup - it should update immediately.</p>
+        
+        <p>Fourth paragraph. Test custom keyboard shortcuts by changing them in the popup.</p>
+        
+        <p>Fifth and final paragraph. The extension should remember your settings even after reload.</p>
+    </div>
+
+    <div class="test-section">
+        <h2>🐛 Known Issues to Verify Fixed</h2>
+        <ul>
+            <li>✅ Alt+L should work (not show "⌘+META")</li>
+            <li>✅ Changing shortcuts (F/V to D/C) should work</li>
+            <li>✅ Default color should be bright yellow</li>
+            <li>✅ No navigation to sidebars on GitHub</li>
+            <li>✅ Popup spacing balanced</li>
+            <li>✅ Color labels readable (black, below colors)</li>
+            <li>✅ Reset button styled properly</li>
+        </ul>
+    </div>
+
+    <script>
+        // Log keyboard events for debugging
+        document.addEventListener('keydown', (e) => {
+            if (e.altKey || e.metaKey || e.ctrlKey) {
+                console.log('Key pressed:', {
+                    key: e.key,
+                    code: e.code,
+                    altKey: e.altKey,
+                    ctrlKey: e.ctrlKey,
+                    metaKey: e.metaKey
+                });
+            }
+        });
+    </script>
+</body>
+</html>

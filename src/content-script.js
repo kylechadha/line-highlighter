@@ -11,11 +11,93 @@
     cursorPosition: 0  // Track cursor position
   };
 
+  // Default settings
+  let settings = {
+    shortcuts: {
+      toggle: { key: ';', modifiers: ['ctrl'] }, // Cmd+; on Mac, Ctrl+; on Windows
+      up: { key: 'f', modifiers: [] },
+      down: { key: 'v', modifiers: [] }
+    },
+    color: 'yellow' // Default to original yellow
+  };
+
   let highlighter = null;
 
-  function init() {
+  async function init() {
+    // Load settings from storage with fallback
+    await loadSettings();
+    
     document.addEventListener('click', handleClick);
     document.addEventListener('keydown', handleKeydown);
+    
+    // Listen for settings changes from popup
+    chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+      if (message.type === 'updateSettings') {
+        settings = message.settings;
+        saveSettings(settings);
+        if (highlighter) {
+          updateHighlighterColor();
+        }
+      } else if (message.type === 'setEnabled') {
+        state.enabled = message.enabled;
+        if (state.enabled) {
+          createHighlighter();
+        } else {
+          removeHighlighter();
+        }
+      }
+    });
+  }
+
+  async function loadSettings() {
+    try {
+      // Try sync storage first
+      let result = await chrome.storage.sync.get('settings');
+      if (result.settings && validateSettings(result.settings)) {
+        settings = result.settings;
+      } else {
+        // Fallback to local storage
+        result = await chrome.storage.local.get('settings');
+        if (result.settings && validateSettings(result.settings)) {
+          settings = result.settings;
+        }
+      }
+    } catch (e) {
+      // Use defaults on error
+    }
+  }
+  
+  function validateSettings(settings) {
+    // Check if settings has the required structure
+    if (!settings || typeof settings !== 'object') return false;
+    if (!settings.shortcuts || typeof settings.shortcuts !== 'object') return false;
+    if (!settings.color || typeof settings.color !== 'string') return false;
+    
+    // Check each shortcut
+    const requiredShortcuts = ['toggle', 'up', 'down'];
+    for (const shortcut of requiredShortcuts) {
+      if (!settings.shortcuts[shortcut]) return false;
+      const s = settings.shortcuts[shortcut];
+      if (!s.key || typeof s.key !== 'string') return false;
+      if (!Array.isArray(s.modifiers)) return false;
+    }
+    
+    return true;
+  }
+
+  async function saveSettings(newSettings) {
+    try {
+      // Save to both local and sync
+      await chrome.storage.local.set({ settings: newSettings });
+      try {
+        await chrome.storage.sync.set({ settings: newSettings });
+      } catch (e) {
+        // Sync failed, but local is saved
+        console.log('Settings saved locally only');
+      }
+    } catch (e) {
+      console.error('Failed to save settings:', e);
+    }
   }
 
   function createHighlighter() {
@@ -28,12 +110,12 @@
       left: 0;
       width: 100%;
       height: 24px;
-      background-color: yellow;
+      background-color: ${getColorValue(settings.color)};
       mix-blend-mode: multiply;
       pointer-events: none;
       z-index: 2147483647;
       display: none;
-      transition: top 0.18s cubic-bezier(0.25, 0.46, 0.45, 0.94), height 0.18s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 0.18s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.15s ease-out;
+      transition: top 0.12s cubic-bezier(0.25, 0.46, 0.45, 0.94), height 0.12s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 0.12s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.1s ease-out;
     `;
     
     document.body.appendChild(highlighter);
@@ -42,6 +124,7 @@
 
   function removeHighlighter() {
     if (highlighter) {
+      highlighter.style.display = 'none';
       highlighter.remove();
       highlighter = null;
     }
@@ -218,6 +301,25 @@
             return NodeFilter.FILTER_REJECT;
           }
           
+          // Skip navigation, sidebar, and breadcrumb elements
+          let checkElement = parent;
+          while (checkElement && checkElement !== document.body) {
+            const className = checkElement.className || '';
+            const id = checkElement.id || '';
+            const combined = (className + ' ' + id).toLowerCase();
+            
+            if (combined.includes('sidebar') || 
+                combined.includes('breadcrumb') || 
+                combined.includes('navigation') ||
+                combined.includes('nav-') ||
+                combined.includes('toc') ||
+                checkElement.tagName === 'NAV' ||
+                checkElement.tagName === 'ASIDE') {
+              return NodeFilter.FILTER_REJECT;
+            }
+            checkElement = checkElement.parentElement;
+          }
+          
           return NodeFilter.FILTER_ACCEPT;
         }
       }
@@ -373,9 +475,38 @@
     }
   }
 
+  function getColorValue(colorName) {
+    const colors = {
+      yellow: 'yellow', // CSS yellow - the original bright yellow
+      orange: '#FFB86C',
+      pink: '#FF79C6',
+      green: '#50FA7B',
+      blue: '#8BE9FD',
+      purple: '#BD93F9'
+    };
+    return colors[colorName] || 'yellow';
+  }
+
+  function updateHighlighterColor() {
+    if (highlighter) {
+      highlighter.style.backgroundColor = getColorValue(settings.color);
+    }
+  }
+
+  function matchesShortcut(e, shortcut) {
+    const keyMatches = e.key.toLowerCase() === shortcut.key.toLowerCase();
+    
+    // Check that modifiers match exactly
+    const altMatches = shortcut.modifiers.includes('alt') === e.altKey;
+    const ctrlMatches = shortcut.modifiers.includes('ctrl') === (e.ctrlKey || e.metaKey);
+    const shiftMatches = shortcut.modifiers.includes('shift') === e.shiftKey;
+    
+    return keyMatches && altMatches && ctrlMatches && shiftMatches;
+  }
+
   function handleKeydown(e) {
-    // Toggle with Ctrl/Cmd + E
-    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'e') {
+    // Toggle with custom shortcut (default Alt+L)
+    if (matchesShortcut(e, settings.shortcuts.toggle)) {
       e.preventDefault();
       state.enabled = !state.enabled;
       
@@ -388,22 +519,25 @@
         state.currentLineIndex = -1;
         console.log('Line Highlighter: Disabled');
       }
+      
+      // Notify background script to update icon
+      chrome.runtime.sendMessage({
+        type: 'stateChanged',
+        enabled: state.enabled
+      });
+      
       return;
     }
     
     if (!state.enabled) return;
     
-    // Handle navigation keys
-    switch(e.key.toLowerCase()) {
-      case 'f':
-        e.preventDefault();
-        navigateToLine('up');
-        break;
-        
-      case 'v':
-        e.preventDefault();
-        navigateToLine('down');
-        break;
+    // Handle navigation with custom shortcuts
+    if (matchesShortcut(e, settings.shortcuts.up)) {
+      e.preventDefault();
+      navigateToLine('up');
+    } else if (matchesShortcut(e, settings.shortcuts.down)) {
+      e.preventDefault();
+      navigateToLine('down');
     }
   }
 

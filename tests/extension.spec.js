@@ -3,13 +3,12 @@ const path = require('path');
 
 test.describe('Line Highlighter Extension', () => {
   let browser;
-  let context;
   let page;
 
   test.beforeAll(async () => {
     // Launch browser with extension
-    browser = await chromium.launch({
-      headless: false,
+    browser = await chromium.launchPersistentContext('', {
+      headless: false, // Extensions don't work properly in headless mode
       args: [
         `--disable-extensions-except=${path.join(__dirname, '..')}`,
         `--load-extension=${path.join(__dirname, '..')}`
@@ -18,8 +17,8 @@ test.describe('Line Highlighter Extension', () => {
   });
 
   test.beforeEach(async () => {
-    context = await browser.newContext();
-    page = await context.newPage();
+    // browser is already a context when using launchPersistentContext
+    page = await browser.newPage();
     
     // Navigate to a test page with text content
     await page.goto('data:text/html,<html><body><article><h1>Test Page</h1><p>This is the first line of text in the paragraph.</p><p>This is the second line of text.</p><p>This is the third line of text.</p><p>This is the fourth line of text.</p><p>This is the fifth line of text.</p></article></body></html>');
@@ -29,7 +28,7 @@ test.describe('Line Highlighter Extension', () => {
   });
 
   test.afterEach(async () => {
-    await context.close();
+    await page.close();
   });
 
   test.afterAll(async () => {
@@ -37,8 +36,9 @@ test.describe('Line Highlighter Extension', () => {
   });
 
   test('should enable/disable with keyboard shortcut', async () => {
-    // Press Ctrl+E to enable
-    await page.keyboard.press('Control+e');
+    // Press Cmd+Shift+L to enable
+    const modifierKey = process.platform === 'darwin' ? 'Meta' : 'Control';
+    await page.keyboard.press(`${modifierKey}+Shift+l`);
     
     // Check for console message
     const consoleMessage = await page.waitForEvent('console', {
@@ -51,8 +51,8 @@ test.describe('Line Highlighter Extension', () => {
     const highlighter = await page.$('#line-highlighter-marker');
     expect(highlighter).toBeTruthy();
     
-    // Press Ctrl+E again to disable
-    await page.keyboard.press('Control+e');
+    // Press Cmd+Shift+L again to disable
+    await page.keyboard.press(`${modifierKey}+Shift+l`);
     
     // Check for disable message
     const disableMessage = await page.waitForEvent('console', {
@@ -64,7 +64,8 @@ test.describe('Line Highlighter Extension', () => {
 
   test('should highlight clicked line', async () => {
     // Enable the extension
-    await page.keyboard.press('Control+e');
+    const modifierKey = process.platform === 'darwin' ? 'Meta' : 'Control';
+    await page.keyboard.press(`${modifierKey}+Shift+l`);
     await page.waitForTimeout(100);
     
     // Click on a paragraph
@@ -92,7 +93,8 @@ test.describe('Line Highlighter Extension', () => {
 
   test('should navigate between lines with keyboard', async () => {
     // Enable and click on second paragraph
-    await page.keyboard.press('Control+e');
+    const modifierKey = process.platform === 'darwin' ? 'Meta' : 'Control';
+    await page.keyboard.press(`${modifierKey}+Shift+l`);
     await page.waitForTimeout(100);
     
     const secondParagraph = await page.$('p:nth-of-type(2)');
@@ -130,77 +132,5 @@ test.describe('Line Highlighter Extension', () => {
     expect(Math.abs(finalPosition - initialPosition)).toBeLessThan(5);
   });
 
-  test('should adjust line height with J/N keys', async () => {
-    // Enable and click on text
-    await page.keyboard.press('Control+e');
-    await page.waitForTimeout(100);
-    
-    const paragraph = await page.$('p:first-of-type');
-    await paragraph.click();
-    await page.waitForTimeout(100);
-    
-    // Get initial height
-    const initialHeight = await page.evaluate(() => {
-      const highlighter = document.querySelector('#line-highlighter-marker');
-      return parseInt(highlighter.style.height);
-    });
-    
-    // Press J to increase height
-    await page.keyboard.press('j');
-    await page.keyboard.press('j');
-    
-    const increasedHeight = await page.evaluate(() => {
-      const highlighter = document.querySelector('#line-highlighter-marker');
-      return parseInt(highlighter.style.height);
-    });
-    
-    expect(increasedHeight).toBeGreaterThan(initialHeight);
-    
-    // Press N to decrease height
-    await page.keyboard.press('n');
-    await page.keyboard.press('n');
-    await page.keyboard.press('n');
-    
-    const decreasedHeight = await page.evaluate(() => {
-      const highlighter = document.querySelector('#line-highlighter-marker');
-      return parseInt(highlighter.style.height);
-    });
-    
-    expect(decreasedHeight).toBeLessThan(increasedHeight);
-  });
 
-  test('should toggle cursor visibility with G key', async () => {
-    // Enable and click on text
-    await page.keyboard.press('Control+e');
-    await page.waitForTimeout(100);
-    
-    const paragraph = await page.$('p:first-of-type');
-    await paragraph.click();
-    await page.waitForTimeout(100);
-    
-    // Cursor should be hidden initially
-    const initialDisplay = await page.evaluate(() => {
-      const cursor = document.querySelector('#line-highlighter-cursor');
-      return cursor ? cursor.style.display : null;
-    });
-    expect(initialDisplay).toBe('none');
-    
-    // Press G to show cursor
-    await page.keyboard.press('g');
-    
-    const afterToggle = await page.evaluate(() => {
-      const cursor = document.querySelector('#line-highlighter-cursor');
-      return cursor ? cursor.style.display : null;
-    });
-    expect(afterToggle).toBe('block');
-    
-    // Press G again to hide
-    await page.keyboard.press('g');
-    
-    const finalDisplay = await page.evaluate(() => {
-      const cursor = document.querySelector('#line-highlighter-cursor');
-      return cursor ? cursor.style.display : null;
-    });
-    expect(finalDisplay).toBe('none');
-  });
 });

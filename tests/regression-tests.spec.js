@@ -37,7 +37,7 @@ test.describe('Regression Tests - BBC and IETF', () => {
     await page.waitForTimeout(1000);
     
     // Enable the highlighter
-    await page.keyboard.press('Control+e');
+    await page.keyboard.press('Control+Semicolon');
     await page.waitForTimeout(500);
     
     // Try different selectors for BBC's article structure
@@ -139,7 +139,7 @@ test.describe('Regression Tests - BBC and IETF', () => {
     await page.waitForTimeout(1000);
     
     // Enable the highlighter
-    await page.keyboard.press('Control+e');
+    await page.keyboard.press('Control+Semicolon');
     await page.waitForTimeout(500);
     
     // Scroll down a bit first
@@ -237,7 +237,7 @@ test.describe('Regression Tests - BBC and IETF', () => {
         await page.evaluate(scriptContent);
         
         // Enable highlighter
-        await page.keyboard.press('Control+e');
+        await page.keyboard.press('Control+Semicolon');
         await page.waitForTimeout(500);
         
         // Click on content
@@ -324,7 +324,7 @@ test.describe('Regression Tests - BBC and IETF', () => {
     await page.evaluate(scriptContent);
     
     // Enable highlighter
-    await page.keyboard.press('Control+e');
+    await page.keyboard.press('Control+Semicolon');
     await page.waitForTimeout(500);
     
     // Click on first paragraph

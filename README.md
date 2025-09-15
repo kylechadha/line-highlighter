@@ -2,22 +2,27 @@
 
 Lose track of how far you've read on a web page? Line Highlighter is a browser extension that highlights your current position on any website, allowing you to easily keep track of where you are. The highlighter snaps to text and allows you to easily move through the page.
 
-<img src="demo.gif" alt="Line Highlighter Demo" width="400">
+<img src="assets/demo.gif" alt="Line Highlighter Demo" width="400">
 
 ## How It Works
 
-Press 'ctrl+e' on windows or 'cmd+e' on mac to activate the highlighter and then click on any text on the page. Once you see the highlighter, you can move down or up line by line by pressing 'f' and 'v'.
+Press 'Cmd+;' (Mac) or 'Ctrl+;' (Windows/Linux) to activate the highlighter (or use the extension popup), then click on any text on the page. Once you see the highlighter, you can move down or up line by line using the keyboard shortcuts.
 
 | Shortcut | Action |
 |----------|--------|
-| `Ctrl/Cmd + E` | Enable/disable Line Highlighter |
+| `Cmd + ;` (Mac) / `Ctrl + ;` (PC) | Enable/disable Line Highlighter |
 | `F` | Move to previous line |
 | `V` | Move to next line |
+
+**Note:** All keyboard shortcuts can be customized in the extension popup.
 
 ## Features
 
 - **Smart Line Detection**: Automatically detects and highlights the line of text you click on
 - **Intelligent Navigation**: Move between lines of text on a page with keyboard shortcuts
+- **Customizable Shortcuts**: Change keyboard shortcuts to your preference via the popup
+- **Multiple Colors**: Choose from 6 highlighter colors (yellow, orange, pink, green, blue, purple)
+- **Visual Feedback**: Extension icon shows when highlighter is active
 - **No Dependencies**: Pure vanilla JavaScript, lightweight and fast
 
 ## Technical Implementation
