@@ -307,6 +307,8 @@ function initColorPicker() {
     // Set initial selection
     if (colorKey === currentSettings.color) {
       btn.classList.add('selected');
+    } else {
+      btn.classList.remove('selected');
     }
     
     btn.addEventListener('click', () => {

@@ -10,9 +10,9 @@ html {
 }
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', system-ui, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI",
+    system-ui, sans-serif;
   width: 360px;
-  height: 420px;
   background: #fff;
   color: #000;
   margin: 0;
@@ -22,7 +22,6 @@ body {
 
 .container {
   padding: 20px;
-  height: 420px;
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -50,7 +49,7 @@ h1 {
 .toggle-section {
   text-align: center;
   margin-bottom: 20px;
-  padding: 16px;
+  padding: 12px;
   background: #f8f8f8;
   border-radius: 8px;
 }
@@ -66,10 +65,13 @@ h1 {
   color: #666;
   cursor: pointer;
   transition: all 0.3s ease;
+  line-height: 50px;
+  padding: 0;
+  text-align: center;
 }
 
 .toggle-btn.active {
-  background: #FFE066;
+  background: #ffe066;
   color: #000;
   box-shadow: 0 2px 8px rgba(255, 224, 102, 0.4);
 }
@@ -79,16 +81,17 @@ h1 {
 }
 
 .status-text {
-  margin-top: 8px;
+  margin-top: 0;
   font-size: 13px;
   color: #666;
   height: 0;
   overflow: hidden;
-  transition: height 0.2s ease;
+  transition: height 0.2s ease, margin-top 0.2s ease;
 }
 
 .status-text:not(:empty) {
   height: 18px;
+  margin-top: 8px;
 }
 
 /* Sections */
@@ -149,7 +152,7 @@ h2 {
   flex: 1;
   max-width: 120px;
   padding: 6px 10px;
-  font-family: 'SF Mono', Monaco, 'Courier New', monospace;
+  font-family: "SF Mono", Monaco, "Courier New", monospace;
   font-size: 12px;
   font-weight: 500;
   text-align: center;
@@ -166,16 +169,20 @@ h2 {
 }
 
 .shortcut-input.recording {
-  background: #FFE066;
-  border-color: #FFC107;
+  background: #ffe066;
+  border-color: #ffc107;
   animation: pulse 1s infinite;
 }
 
 @keyframes pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.7; }
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
 }
-
 
 .reset-btn {
   font-size: 11px;
@@ -200,7 +207,7 @@ h2 {
   grid-template-columns: repeat(3, 1fr);
   gap: 10px;
   row-gap: 28px;
-  padding: 12px 8px 20px 8px;
+  padding: 12px 8px 26px 8px;
   background: #f8f8f8;
   border-radius: 6px;
 }
@@ -228,7 +235,7 @@ h2 {
 }
 
 .color-btn.selected::before {
-  content: '';
+  content: "";
   position: absolute;
   width: 20px;
   height: 20px;
@@ -250,6 +257,5 @@ h2 {
   transform: translateX(-50%);
   white-space: nowrap;
 }
-
 
 /* Specific color backgrounds are set in JavaScript */

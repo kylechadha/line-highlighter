@@ -130,7 +130,24 @@ Controls are handled in content-script.js (v2.1 defaults):
 - Created `scripts/` for utility scripts
 - Updated all file references to match new structure
 
+### Recent UI Polish Fixes (2024-09-19)
+1. **Status Text Spacing**
+   - **Problem**: Status text element had margin even when empty (OFF state)
+   - **Solution**: Moved margin-top to only apply when text is present
+   - **Files**: `popup-styles.css:82-93`
+
+2. **Color Grid Bottom Spacing**
+   - **Problem**: Uneven spacing below bottom row due to absolute positioned labels
+   - **Solution**: Adjusted padding-bottom in color-grid container
+   - **Files**: `popup-styles.css:205`
+
+3. **Multiple Selected Colors Bug**
+   - **Problem**: Previous and current colors both showed as selected after reopening popup
+   - **Solution**: Explicitly remove selected class from non-current colors on init
+   - **Files**: `popup.js:307-312`
+
 ### Known Issues and Workarounds
 1. **SVG Icons**: Chrome has intermittent issues with SVG icons in extensions. Using badge text as fallback.
 2. **Ctrl+L Conflict**: Browser uses this for address bar focus, avoided by using semicolon.
 3. **Alt/Option on Mac**: System intercepts many Alt combinations, using Cmd instead.
+4. **Extension Popup DevTools**: Can't edit styles directly in popup inspector. Use debugger pause trick or open popup.html in separate tab.
