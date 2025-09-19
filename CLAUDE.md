@@ -151,3 +151,26 @@ Controls are handled in content-script.js (v2.1 defaults):
 2. **Ctrl+L Conflict**: Browser uses this for address bar focus, avoided by using semicolon.
 3. **Alt/Option on Mac**: System intercepts many Alt combinations, using Cmd instead.
 4. **Extension Popup DevTools**: Can't edit styles directly in popup inspector. Use debugger pause trick or open popup.html in separate tab.
+
+## Development Workflow
+
+### Branching Strategy
+- **develop**: Default branch for development
+- **master**: Production branch for releases
+- Feature branches created from develop
+- PRs from develop to master for releases
+
+### Pull Request Guidelines
+When creating PRs:
+- Use concise, descriptive title
+- Brief summary of changes (2-3 sentences)
+- Bullet points for key features/fixes
+- Do NOT include test plans or checklists
+- Keep focus on what changed, not process
+
+### Commit Message Convention
+Use clear, descriptive commit messages:
+- Start with imperative verb (Add, Fix, Update, Remove)
+- Keep first line under 72 characters
+- Add bullet points for multiple changes
+- Example: "Fix popup UI spacing issues"
