@@ -73,7 +73,7 @@ test.describe.skip('Navigation Fixes - GitHub Docs & Scrolling', () => {  // Ski
     `));
 
     // Enable the extension
-    await page.keyboard.press('Control+e');
+    await page.keyboard.press('Control+Semicolon');
     await page.waitForTimeout(100);
     
     // Click on main content
@@ -144,7 +144,7 @@ test.describe.skip('Navigation Fixes - GitHub Docs & Scrolling', () => {  // Ski
     `));
 
     // Enable the extension
-    await page.keyboard.press('Control+e');
+    await page.keyboard.press('Control+Semicolon');
     await page.waitForTimeout(100);
     
     // Click on a paragraph in the middle of the page
@@ -233,7 +233,7 @@ test.describe.skip('Navigation Fixes - GitHub Docs & Scrolling', () => {  // Ski
     `));
 
     // Enable the extension
-    await page.keyboard.press('Control+e');
+    await page.keyboard.press('Control+Semicolon');
     await page.waitForTimeout(100);
     
     // Click on content in main area

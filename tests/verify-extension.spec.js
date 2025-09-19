@@ -39,7 +39,7 @@ test.describe('Verify Extension Loading', () => {
     await page.waitForTimeout(500);
     
     // Try to enable the highlighter
-    await page.keyboard.press('Control+e');
+    await page.keyboard.press('Control+Semicolon');
     
     // Check if console message appears or highlighter element is created
     let highlighterCreated = false;
@@ -81,7 +81,7 @@ test.describe('Verify Extension Loading', () => {
     await page.waitForTimeout(1000);
     
     // Enable the highlighter
-    await page.keyboard.press('Control+e');
+    await page.keyboard.press('Control+Semicolon');
     await page.waitForTimeout(500);
     
     // Click on main content text

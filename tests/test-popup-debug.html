@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Test Popup Colors</title>
+  <link rel="stylesheet" href="src/popup-styles.css">
+  <style>
+    body {
+      padding: 20px;
+    }
+    .debug-info {
+      margin-top: 20px;
+      padding: 10px;
+      background: #f0f0f0;
+      font-family: monospace;
+      white-space: pre-wrap;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Test Color Display</h1>
+    
+    <!-- Color Picker -->
+    <div class="section">
+      <h2>Highlighter Color</h2>
+      <div class="color-grid">
+        <button class="color-btn selected" data-color="yellow"></button>
+        <button class="color-btn" data-color="orange"></button>
+        <button class="color-btn" data-color="pink"></button>
+        <button class="color-btn" data-color="green"></button>
+        <button class="color-btn" data-color="blue"></button>
+        <button class="color-btn" data-color="purple"></button>
+      </div>
+    </div>
+    
+    <div class="debug-info" id="debug"></div>
+  </div>
+  
+  <script>
+    const colors = {
+      yellow: { hex: '#FFFF00', name: 'Yellow' },
+      orange: { hex: '#FFB86C', name: 'Orange' },
+      pink: { hex: '#FF79C6', name: 'Pink' },
+      green: { hex: '#50FA7B', name: 'Green' },
+      blue: { hex: '#8BE9FD', name: 'Blue' },
+      purple: { hex: '#BD93F9', name: 'Purple' }
+    };
+    
+    const debug = document.getElementById('debug');
+    const colorButtons = document.querySelectorAll('.color-btn');
+    
+    colorButtons.forEach(btn => {
+      const colorKey = btn.dataset.color;
+      const color = colors[colorKey];
+      
+      debug.textContent += `Setting ${colorKey}: ${color.hex}\n`;
+      btn.style.backgroundColor = color.hex;
+      
+      // Add color name
+      if (!btn.querySelector('.color-name')) {
+        const nameSpan = document.createElement('span');
+        nameSpan.className = 'color-name';
+        nameSpan.textContent = color.name;
+        btn.appendChild(nameSpan);
+      }
+      
+      // Check computed style
+      const computed = window.getComputedStyle(btn);
+      debug.textContent += `  Computed background: ${computed.backgroundColor}\n`;
+    });
+  </script>
+</body>
+</html>

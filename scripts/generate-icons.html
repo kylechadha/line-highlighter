@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Generate PNG Icons</title>
+</head>
+<body>
+  <h1>Generate PNG Icons for Line Highlighter</h1>
+  <p>Open this in Chrome, then click the buttons to download the PNG icons</p>
+  
+  <canvas id="canvas" width="128" height="128"></canvas>
+  <br>
+  <button onclick="generateIcon(128, false)">Download icon-128.png (inactive)</button>
+  <button onclick="generateIcon(128, true)">Download icon-128-active.png (active)</button>
+  
+  <script>
+    function generateIcon(size, active) {
+      const canvas = document.getElementById('canvas');
+      canvas.width = size;
+      canvas.height = size;
+      const ctx = canvas.getContext('2d');
+      
+      // Clear canvas
+      ctx.clearRect(0, 0, size, size);
+      
+      // Draw simple highlighter pen at 45 degree angle
+      ctx.save();
+      ctx.translate(size/2, size/2);
+      ctx.rotate(Math.PI / 4);
+      
+      const scale = size / 128;
+      ctx.scale(scale, scale);
+      
+      // Main pen body
+      ctx.fillStyle = active ? '#FFC107' : '#9E9E9E';
+      ctx.fillRect(-32, -40, 64, 80);
+      
+      // Grip section
+      ctx.fillStyle = active ? '#FFB300' : '#757575';
+      ctx.fillRect(-32, -8, 64, 28);
+      
+      // Tip holder (triangle)
+      ctx.fillStyle = active ? '#FF8F00' : '#616161';
+      ctx.beginPath();
+      ctx.moveTo(-32, 40);
+      ctx.lineTo(0, 56);
+      ctx.lineTo(32, 40);
+      ctx.closePath();
+      ctx.fill();
+      
+      // Tip
+      ctx.fillStyle = active ? '#FFFF00' : '#424242';
+      ctx.fillRect(-12, 54, 24, 12);
+      
+      // Cap
+      ctx.fillStyle = active ? '#FF6F00' : '#757575';
+      ctx.fillRect(-32, -48, 64, 10);
+      
+      ctx.restore();
+      
+      // Add highlight stroke if active
+      if (active) {
+        ctx.save();
+        ctx.translate(size/2, size/2);
+        ctx.rotate(Math.PI / 4);
+        ctx.scale(scale, scale);
+        ctx.globalAlpha = 0.5;
+        ctx.fillStyle = '#FFFF00';
+        ctx.fillRect(35, 35, 40, 12);
+        ctx.restore();
+      }
+      
+      // Download the image
+      canvas.toBlob(function(blob) {
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = active ? `icon-${size}-active.png` : `icon-${size}.png`;
+        a.click();
+      });
+    }
+    
+    // Also generate smaller sizes
+    function generateAllSizes() {
+      [16, 48, 128].forEach(size => {
+        setTimeout(() => generateIcon(size, false), size * 10);
+        setTimeout(() => generateIcon(size, true), size * 10 + 500);
+      });
+    }
+  </script>
+  
+  <br><br>
+  <button onclick="generateAllSizes()">Generate All Sizes (16, 48, 128)</button>
+</body>
+</html>

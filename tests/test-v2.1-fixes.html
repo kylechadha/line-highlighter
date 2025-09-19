@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test v2.1 Fixes - Line Highlighter</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            line-height: 1.6;
+        }
+        h1 {
+            color: #333;
+            border-bottom: 2px solid #FFE066;
+            padding-bottom: 10px;
+        }
+        .test-section {
+            margin: 30px 0;
+            padding: 20px;
+            background: #f8f8f8;
+            border-radius: 8px;
+        }
+        .test-section h2 {
+            color: #666;
+            margin-top: 0;
+        }
+        .test-item {
+            margin: 15px 0;
+            padding: 10px;
+            background: white;
+            border-left: 3px solid #FFE066;
+        }
+        .keyboard {
+            font-family: monospace;
+            background: #333;
+            color: #fff;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 14px;
+        }
+        .status {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 3px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        .status.pass {
+            background: #50FA7B;
+            color: #000;
+        }
+        .status.fail {
+            background: #FF5555;
+            color: #fff;
+        }
+        .test-text {
+            margin: 20px 0;
+            padding: 15px;
+            background: #fff;
+            border: 1px solid #ddd;
+        }
+        .test-text p {
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>Line Highlighter v2.1 - Bug Fixes Test Page</h1>
+    
+    <div class="test-section">
+        <h2>🔧 Fixed Issues Checklist</h2>
+        
+        <div class="test-item">
+            <strong>1. Keyboard Shortcut Changed</strong><br>
+            Press <span class="keyboard">Cmd+Shift+L</span> (Mac) or <span class="keyboard">Ctrl+Shift+L</span> (Windows/Linux)<br>
+            <em>Previous: Alt+L didn't work on Mac</em>
+        </div>
+        
+        <div class="test-item">
+            <strong>2. Recording Shortcuts with Modifiers</strong><br>
+            Open popup, click on a shortcut field, press a key with modifiers<br>
+            <em>Should show correctly (e.g., "Cmd+A" not "⌘+META")</em>
+        </div>
+        
+        <div class="test-item">
+            <strong>3. Highlighter Hides When Disabled</strong><br>
+            Enable → Click text → Disable with <span class="keyboard">Cmd+Shift+L</span><br>
+            <em>Highlighter should disappear immediately</em>
+        </div>
+        
+        <div class="test-item">
+            <strong>4. Color Picker Double Selection</strong><br>
+            Open popup, click different colors<br>
+            <em>Only one color should be selected at a time</em>
+        </div>
+        
+        <div class="test-item">
+            <strong>5. Popup UI Spacing</strong><br>
+            Open popup and check:<br>
+            • No scrollbar<br>
+            • Color labels fully visible<br>
+            • Even spacing throughout<br>
+            • Reset button inline with "Keyboard Shortcuts"
+        </div>
+        
+        <div class="test-item">
+            <strong>6. Icon Badge</strong><br>
+            Enable extension<br>
+            <em>Should show "ON" badge on yellow background</em>
+        </div>
+        
+        <div class="test-item">
+            <strong>7. Storage Validation</strong><br>
+            Settings should persist correctly<br>
+            <em>Corrupted settings automatically reset to defaults</em>
+        </div>
+    </div>
+    
+    <div class="test-section">
+        <h2>📝 Test Text</h2>
+        <div class="test-text">
+            <p>This is the first paragraph of text. Click here to test highlighting. The line should turn yellow (or your selected color) when you click on it.</p>
+            
+            <p>This is the second paragraph. After clicking, use the <span class="keyboard">F</span> key to move up and <span class="keyboard">V</span> key to move down between lines.</p>
+            
+            <p>This is the third paragraph. You can customize all keyboard shortcuts in the popup. Click the extension icon to open the settings popup.</p>
+            
+            <p>This is the fourth paragraph. The highlighter should follow your clicks accurately and move smoothly between lines when using keyboard navigation.</p>
+            
+            <p>This is the fifth paragraph. Test that the highlighter properly hides when you disable the extension with <span class="keyboard">Cmd+Shift+L</span>.</p>
+        </div>
+    </div>
+    
+    <div class="test-section">
+        <h2>🚀 Quick Test Steps</h2>
+        <ol>
+            <li>Press <span class="keyboard">Cmd+Shift+L</span> to enable the extension</li>
+            <li>Click on any text above - a yellow highlight should appear</li>
+            <li>Press <span class="keyboard">F</span> and <span class="keyboard">V</span> to navigate up/down</li>
+            <li>Click the extension icon to open the popup</li>
+            <li>Try changing colors and shortcuts</li>
+            <li>Press <span class="keyboard">Cmd+Shift+L</span> again to disable</li>
+        </ol>
+    </div>
+    
+    <script>
+        // Log keyboard events for debugging
+        document.addEventListener('keydown', (e) => {
+            const modifiers = [];
+            if (e.metaKey) modifiers.push('Cmd');
+            if (e.ctrlKey) modifiers.push('Ctrl');
+            if (e.altKey) modifiers.push('Alt');
+            if (e.shiftKey) modifiers.push('Shift');
+            
+            const key = e.key === ' ' ? 'Space' : e.key;
+            const shortcut = [...modifiers, key].join('+');
+            
+            if (modifiers.length > 0) {
+                console.log('Keyboard shortcut pressed:', shortcut);
+            }
+        });
+        
+        // Check for highlighter element
+        setInterval(() => {
+            const highlighter = document.querySelector('#line-highlighter-marker');
+            if (highlighter) {
+                console.log('Highlighter status:', {
+                    visible: highlighter.style.display !== 'none',
+                    top: highlighter.style.top,
+                    color: highlighter.style.backgroundColor
+                });
+            }
+        }, 2000);
+    </script>
+</body>
+</html>

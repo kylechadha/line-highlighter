@@ -36,7 +36,7 @@ test.describe('Test Navigation Issues', () => {
     await page.waitForTimeout(1000);
     
     // Enable the highlighter
-    await page.keyboard.press('Control+e');
+    await page.keyboard.press('Control+Semicolon');
     await page.waitForTimeout(500);
     
     // Click on the first line of main content
@@ -169,7 +169,7 @@ test.describe('Test Navigation Issues', () => {
     await page.waitForTimeout(500);
     
     // Enable highlighter
-    await page.keyboard.press('Control+e');
+    await page.keyboard.press('Control+Semicolon');
     await page.waitForTimeout(500);
     
     // Click on paragraph 20

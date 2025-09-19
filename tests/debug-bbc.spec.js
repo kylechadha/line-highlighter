@@ -44,7 +44,7 @@ test.describe('Debug BBC Issue', () => {
     await page.waitForTimeout(1000);
     
     // Try to enable the highlighter
-    await page.keyboard.press('Control+e');
+    await page.keyboard.press('Control+Semicolon');
     await page.waitForTimeout(1000);
     
     // Check if highlighter element was created
