@@ -146,13 +146,14 @@ When creating PRs:
 
 ### Automated with Release-Please
 1. **Development**: All work happens on `develop` branch with conventional commits
-2. **Release PR**: Release-Please automatically creates/updates a PR from develop to master
-3. **Version Bump**: When PR is merged, Release-Please:
-   - Updates version in manifest.json and package.json
-   - Updates CHANGELOG.md
+2. **Ready to Release**: Manually create PR from `develop` to `master`
+3. **Release PR**: After merging to master, Release-Please creates a Release PR on master with:
+   - Version bumps in manifest.json and package.json
+   - Updated CHANGELOG.md
+4. **Publish**: When Release PR is merged:
    - Creates git tag
    - Creates GitHub release with built extension zip
-4. **Chrome Web Store**: Automatically publishes for feat/fix releases (not chore/docs)
+   - Automatically publishes to Chrome Web Store for feat/fix releases
 
 ### GitHub Secrets Required for Automation
 - `CHROME_EXTENSION_ID`: Extension ID from Chrome Web Store

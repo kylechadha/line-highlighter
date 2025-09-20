@@ -3,7 +3,7 @@ name: Release Please
 on:
   push:
     branches:
-      - develop
+      - master
 
 permissions:
   contents: write
@@ -18,9 +18,9 @@ jobs:
         with:
           release-type: node
           package-name: line-highlighter
-          default-branch: develop
           target-branch: master
           pull-request-title-pattern: "Release v${version}"
+          pull-request-header: "Release v${version}"
           
       # The following steps only run if a release was created
       - uses: actions/checkout@v3
