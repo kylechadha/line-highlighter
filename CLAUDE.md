@@ -40,20 +40,10 @@ npx playwright test tests/extension.spec.js
 
 # Run tests with visual browser (for debugging)
 npx playwright test --headed --workers 1
-
-# Test specific functionality
-npx playwright test --grep "Alt+L"
 ```
 
-### RED-GREEN Testing Process
-When fixing bugs:
-1. Write a test that demonstrates the bug (RED phase - test should fail)
-2. Fix the bug in the code
-3. Verify the test passes (GREEN phase)
-4. Run full test suite to ensure no regressions
-
 ### Key Test Scenarios
-- Alt+L toggle functionality
+- Ctrl+; toggle functionality (Cmd+; on Mac)
 - Navigation between lines (F/V keys)  
 - Custom keyboard shortcuts
 - Popup UI (no scrollbar, proper spacing)
@@ -67,92 +57,48 @@ Controls are handled in content-script.js (v2.1 defaults):
 - Next line: V (customizable)
 - All shortcuts can be customized via the popup UI
 
-## Recent Fixes and Improvements (v2.1)
+## Key Features (v2.1)
 
-### Critical Bugs Fixed
-1. **Keyboard Shortcut Issues**
-   - **Problem**: Alt+L and Cmd+Shift+L weren't working on Mac due to browser conflicts
-   - **Solution**: Changed default to Cmd+; (semicolon) which avoids conflicts
-   - **Files**: `content-script.js:17`, `popup.js:6,238`
+### Features
+1. **Customizable Keyboard Shortcuts**
+   - Default: Cmd+; (Mac) / Ctrl+; (Windows/Linux) for toggle
+   - F/V keys for navigation (customizable)
+   - All shortcuts can be changed via popup
 
-2. **Shortcut Recording Bug**
-   - **Problem**: Recording shortcuts with modifiers showed "Shift+SHIFT" or "⌘+META"
-   - **Solution**: Added logic to ignore pure modifier key presses, improved key code mapping
-   - **Files**: `popup.js:145-176`
+2. **Color Selection**
+   - 6 highlighter colors: yellow, orange, pink, green, blue, purple
+   - Settings persist across sessions
 
-3. **Colors Not Displaying**
-   - **Problem**: Color buttons in popup appeared blank/transparent
-   - **Solution**: Force CSS application with `!important` flag and direct style setting
-   - **Files**: `popup.js:291`
+3. **Smart Navigation**
+   - Line-by-line navigation with F/V keys
+   - Automatic scroll when navigating
+   - Filters out navigation elements and sidebars
 
-4. **Popup Spacing Issues**
-   - **Problem**: Excessive/uneven spacing below OFF button
-   - **Solution**: Made status text height dynamic (0px empty, 18px with text)
-   - **Files**: `popup-styles.css:81-90`
-
-5. **Icon Display Issues**
-   - **Problem**: Extension icon not displaying properly
-   - **Solution**: Using PNG icons (128x128) with badge text fallback
-   - **Files**: `manifest.json:20-25`, `background.js:10-25`
-
-6. **Highlighter Not Hiding**
-   - **Problem**: Highlighter stayed visible when extension was disabled
-   - **Solution**: Fixed removeHighlighter function to properly hide element
-   - **Files**: `content-script.js:107-113`
-
-7. **Storage Corruption**
-   - **Problem**: Corrupted settings could break the extension
-   - **Solution**: Added validateSettings() function to verify structure
-   - **Files**: `popup.js:62-81`, `content-script.js:67-82`
-
-### Navigation Improvements
-1. **GitHub Breadcrumb Navigation**
-   - **Problem**: F/V navigation would jump to sidebar/breadcrumbs
-   - **Solution**: Enhanced text filtering to exclude navigation elements
-   - **Files**: `content-script.js:286-303`
-
-2. **Scroll Position Preservation**
-   - **Problem**: Page would jump to top when navigating between lines
-   - **Solution**: Use absolute page positioning instead of viewport-relative
-   - **Files**: `content-script.js:326,391-406`
 
 ### Testing Infrastructure
-1. **Added Comprehensive Tests**
-   - Bug fix verification tests: `tests/bug-fixes.spec.js`
-   - Shortcut debugging: `tests/debug-shortcuts.spec.js`
-   - Final validation: `tests/final-test.spec.js`
+1. **Core Test Files**
+   - Main extension tests: `tests/extension.spec.js`
+   - Bug fix verification: `tests/bug-fixes.spec.js`
+   - Feature tests: `tests/test-v2.1.spec.js`
+   - Custom shortcuts: `tests/test-custom-shortcuts.spec.js`
+   - Regression tests: `tests/regression-tests.spec.js`
 
 2. **Test Updates**
-   - Updated all tests to use new Ctrl+Semicolon shortcut
-   - Added screenshot capture for visual verification
+   - All tests use Ctrl+; (or Cmd+; on Mac) shortcut
+   - Tests verify PNG icon loading
 
 ### Repository Organization
-- Moved test HTML files to `tests/` directory
-- Created `assets/` for demo.gif
-- Created `scripts/` for utility scripts
-- Updated all file references to match new structure
+- `assets/` - Contains demo.gif and icon PNG files
+- `src/` - Extension source code (content-script.js, popup files, background.js)
+- `tests/` - Playwright test files
+- `scripts/` - Utility scripts
+- `.github/workflows/` - GitHub Actions for Release-Please automation
 
-### Recent UI Polish Fixes (2024-09-19)
-1. **Status Text Spacing**
-   - **Problem**: Status text element had margin even when empty (OFF state)
-   - **Solution**: Moved margin-top to only apply when text is present
-   - **Files**: `popup-styles.css:82-93`
-
-2. **Color Grid Bottom Spacing**
-   - **Problem**: Uneven spacing below bottom row due to absolute positioned labels
-   - **Solution**: Adjusted padding-bottom in color-grid container
-   - **Files**: `popup-styles.css:205`
-
-3. **Multiple Selected Colors Bug**
-   - **Problem**: Previous and current colors both showed as selected after reopening popup
-   - **Solution**: Explicitly remove selected class from non-current colors on init
-   - **Files**: `popup.js:307-312`
 
 ### Known Issues and Workarounds
 1. **Extension Icons**: Using PNG format (128x128) for better compatibility. Badge text as fallback if icon fails.
-2. **Ctrl+L Conflict**: Browser uses this for address bar focus, avoided by using semicolon.
-3. **Alt/Option on Mac**: System intercepts many Alt combinations, using Cmd instead.
-4. **Extension Popup DevTools**: Can't edit styles directly in popup inspector. Use debugger pause trick or open popup.html in separate tab.
+2. **Keyboard Conflicts**: Some shortcuts conflict with browser defaults (e.g., Ctrl+L for address bar). Default uses Ctrl+; to avoid conflicts.
+3. **Extension Popup DevTools**: Can't edit styles directly in popup inspector. Open popup.html in separate tab for debugging.
 
 ## Development Workflow
 
