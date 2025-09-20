@@ -18,10 +18,10 @@
     "default_popup": "src/popup.html",
     "default_title": "Line Highlighter",
     "default_icon": {
-      "16": "src/icons/highlighter-inactive.svg",
-      "32": "src/icons/highlighter-inactive.svg",
-      "48": "src/icons/highlighter-inactive.svg",
-      "128": "src/icons/highlighter-inactive.svg"
+      "128": "assets/icons/inactive.png"
     }
+  },
+  "icons": {
+    "128": "assets/icons/inactive.png"
   }
 }

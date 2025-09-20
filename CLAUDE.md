@@ -90,9 +90,9 @@ Controls are handled in content-script.js (v2.1 defaults):
    - **Solution**: Made status text height dynamic (0px empty, 18px with text)
    - **Files**: `popup-styles.css:81-90`
 
-5. **SVG Icon Loading Errors**
-   - **Problem**: Chrome couldn't load SVG icons with "Failed to fetch" errors
-   - **Solution**: Added SVG paths to manifest with badge text fallback
+5. **Icon Display Issues**
+   - **Problem**: Extension icon not displaying properly
+   - **Solution**: Using PNG icons (128x128) with badge text fallback
    - **Files**: `manifest.json:20-25`, `background.js:10-25`
 
 6. **Highlighter Not Hiding**
@@ -149,7 +149,7 @@ Controls are handled in content-script.js (v2.1 defaults):
    - **Files**: `popup.js:307-312`
 
 ### Known Issues and Workarounds
-1. **SVG Icons**: Chrome has intermittent issues with SVG icons in extensions. Using badge text as fallback.
+1. **Extension Icons**: Using PNG format (128x128) for better compatibility. Badge text as fallback if icon fails.
 2. **Ctrl+L Conflict**: Browser uses this for address bar focus, avoided by using semicolon.
 3. **Alt/Option on Mac**: System intercepts many Alt combinations, using Cmd instead.
 4. **Extension Popup DevTools**: Can't edit styles directly in popup inspector. Use debugger pause trick or open popup.html in separate tab.

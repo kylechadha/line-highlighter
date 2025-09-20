@@ -6,14 +6,11 @@ const tabStates = new Map();
 
 // Update icon based on state
 function updateIcon(tabId, enabled) {
-  // Try to set icon
-  const iconPath = enabled ? 'src/icons/highlighter-active.svg' : 'src/icons/highlighter-inactive.svg';
+  // Use PNG icon
+  const iconPath = enabled ? 'assets/icons/active.png' : 'assets/icons/inactive.png';
   
   chrome.action.setIcon({
     path: {
-      "16": iconPath,
-      "32": iconPath,
-      "48": iconPath,
       "128": iconPath
     },
     tabId: tabId
@@ -67,5 +64,10 @@ chrome.tabs.onRemoved.addListener((tabId) => {
 
 // Set default icon on install/update
 chrome.runtime.onInstalled.addListener(() => {
-  // Skip for now due to SVG issues
+  // Set default inactive icon for all tabs
+  chrome.action.setIcon({
+    path: {
+      "128": "assets/icons/inactive.png"
+    }
+  });
 });

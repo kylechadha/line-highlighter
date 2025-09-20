@@ -47,20 +47,20 @@ test.describe('Debug Keyboard Shortcuts', () => {
     // Test various keyboard combinations
     console.log('\n=== Testing Keyboard Shortcuts ===\n');
     
-    // Test 1: Ctrl+Shift+L (current default)
-    console.log('Testing Ctrl+Shift+L...');
-    await page.keyboard.press('Control+Shift+l');
+    // Test 1: Ctrl+; (current default)
+    console.log('Testing Ctrl+;...');
+    await page.keyboard.press('Control+Semicolon');
     await page.waitForTimeout(500);
     
     let highlighterStatus = await page.evaluate(() => {
       const h = document.querySelector('#line-highlighter-marker');
       return { exists: !!h, enabled: window.state?.enabled };
     });
-    console.log('After Ctrl+Shift+L:', highlighterStatus);
+    console.log('After Ctrl+;:', highlighterStatus);
     
-    // Test 2: Meta+Shift+L (Mac Cmd)
-    console.log('\nTesting Meta+Shift+L...');
-    await page.keyboard.press('Meta+Shift+l');
+    // Test 2: Meta+; (Mac Cmd)
+    console.log('\nTesting Meta+;...');
+    await page.keyboard.press('Meta+Semicolon');
     await page.waitForTimeout(500);
     
     highlighterStatus = await page.evaluate(() => {

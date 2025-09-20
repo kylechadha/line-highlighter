@@ -34,7 +34,7 @@ test.describe('Test if shortcuts actually work', () => {
     console.log('\n=== Testing Current Default (Ctrl+Shift+L) ===\n');
     
     // Test the current default shortcut
-    await page.keyboard.press('Control+Shift+l');
+    await page.keyboard.press('Control+Semicolon');
     await page.waitForTimeout(500);
     
     // Check if highlighter was created
@@ -45,7 +45,7 @@ test.describe('Test if shortcuts actually work', () => {
         display: h ? h.style.display : 'not found'
       };
     });
-    console.log('After Ctrl+Shift+L:', highlighterStatus);
+    console.log('After Ctrl+;:', highlighterStatus);
     
     // If enabled, click to show highlighter
     if (highlighterStatus.exists) {
@@ -64,15 +64,15 @@ test.describe('Test if shortcuts actually work', () => {
       console.log('After clicking paragraph:', highlighterStatus);
     }
     
-    // Test Meta+Shift+L for Mac
-    console.log('\n=== Testing Mac Cmd (Meta+Shift+L) ===\n');
+    // Test Meta+; for Mac
+    console.log('\n=== Testing Mac Cmd (Meta+;) ===\n');
     
     // First disable if enabled
-    await page.keyboard.press('Control+Shift+l');
+    await page.keyboard.press('Control+Semicolon');
     await page.waitForTimeout(500);
     
     // Try Meta version
-    await page.keyboard.press('Meta+Shift+l');
+    await page.keyboard.press('Meta+Semicolon');
     await page.waitForTimeout(500);
     
     highlighterStatus = await page.evaluate(() => {

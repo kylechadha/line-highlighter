@@ -36,9 +36,9 @@ test.describe('Line Highlighter Extension', () => {
   });
 
   test('should enable/disable with keyboard shortcut', async () => {
-    // Press Cmd+Shift+L to enable
+    // Press Ctrl+; (or Cmd+; on Mac) to enable
     const modifierKey = process.platform === 'darwin' ? 'Meta' : 'Control';
-    await page.keyboard.press(`${modifierKey}+Shift+l`);
+    await page.keyboard.press(`${modifierKey}+Semicolon`);
     
     // Check for console message
     const consoleMessage = await page.waitForEvent('console', {
@@ -51,8 +51,8 @@ test.describe('Line Highlighter Extension', () => {
     const highlighter = await page.$('#line-highlighter-marker');
     expect(highlighter).toBeTruthy();
     
-    // Press Cmd+Shift+L again to disable
-    await page.keyboard.press(`${modifierKey}+Shift+l`);
+    // Press Ctrl+; again to disable
+    await page.keyboard.press(`${modifierKey}+Semicolon`);
     
     // Check for disable message
     const disableMessage = await page.waitForEvent('console', {
@@ -65,7 +65,7 @@ test.describe('Line Highlighter Extension', () => {
   test('should highlight clicked line', async () => {
     // Enable the extension
     const modifierKey = process.platform === 'darwin' ? 'Meta' : 'Control';
-    await page.keyboard.press(`${modifierKey}+Shift+l`);
+    await page.keyboard.press(`${modifierKey}+Semicolon`);
     await page.waitForTimeout(100);
     
     // Click on a paragraph
@@ -94,7 +94,7 @@ test.describe('Line Highlighter Extension', () => {
   test('should navigate between lines with keyboard', async () => {
     // Enable and click on second paragraph
     const modifierKey = process.platform === 'darwin' ? 'Meta' : 'Control';
-    await page.keyboard.press(`${modifierKey}+Shift+l`);
+    await page.keyboard.press(`${modifierKey}+Semicolon`);
     await page.waitForTimeout(100);
     
     const secondParagraph = await page.$('p:nth-of-type(2)');
