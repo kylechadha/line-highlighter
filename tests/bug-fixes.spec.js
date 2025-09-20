@@ -32,7 +32,7 @@ test.describe('Bug Fixes - v2.1 Issues', () => {
   test('should hide highlighter when extension is disabled', async () => {
     // Enable highlighter
     const modifierKey = process.platform === 'darwin' ? 'Meta' : 'Control';
-    await page.keyboard.press(`${modifierKey}+Shift+l`);
+    await page.keyboard.press(`${modifierKey}+Semicolon`);
     await page.waitForTimeout(100);
     
     // Click to create highlighter
@@ -51,7 +51,7 @@ test.describe('Bug Fixes - v2.1 Issues', () => {
     expect(isVisible).toBeTruthy();
     
     // Disable highlighter
-    await page.keyboard.press(`${modifierKey}+Shift+l`);
+    await page.keyboard.press(`${modifierKey}+Semicolon`);
     await page.waitForTimeout(100);
     
     // Verify highlighter is removed or hidden
@@ -67,10 +67,10 @@ test.describe('Bug Fixes - v2.1 Issues', () => {
     }
   });
 
-  test('should toggle with Cmd+Shift+L keyboard shortcut', async () => {
-    // Press Cmd+Shift+L to enable
+  test('should toggle with Ctrl+; keyboard shortcut', async () => {
+    // Press Ctrl+; (or Cmd+; on Mac) to enable
     const modifierKey = process.platform === 'darwin' ? 'Meta' : 'Control';
-    await page.keyboard.press(`${modifierKey}+Shift+l`);
+    await page.keyboard.press(`${modifierKey}+Semicolon`);
     await page.waitForTimeout(200);
     
     // Click to show highlighter
@@ -82,8 +82,8 @@ test.describe('Bug Fixes - v2.1 Issues', () => {
     let highlighter = await page.$('#line-highlighter-marker');
     expect(highlighter).toBeTruthy();
     
-    // Press Cmd+Shift+L to disable
-    await page.keyboard.press(`${modifierKey}+Shift+l`);
+    // Press Ctrl+; to disable
+    await page.keyboard.press(`${modifierKey}+Semicolon`);
     await page.waitForTimeout(200);
     
     // Check highlighter is removed
@@ -126,7 +126,7 @@ test.describe('Bug Fixes - v2.1 Issues', () => {
   test('should update shortcuts dynamically', async () => {
     // Enable highlighter
     const modifierKey = process.platform === 'darwin' ? 'Meta' : 'Control';
-    await page.keyboard.press(`${modifierKey}+Shift+l`);
+    await page.keyboard.press(`${modifierKey}+Semicolon`);
     await page.waitForTimeout(100);
     
     // Click to show highlighter

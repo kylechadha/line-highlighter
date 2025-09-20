@@ -20,7 +20,7 @@ test.describe('Line Highlighter v2.1 Features', () => {
     await browser.close();
   });
 
-  test('should toggle with Cmd+Shift+L keyboard shortcut', async () => {
+  test('should toggle with Ctrl+; keyboard shortcut', async () => {
     const page = await browser.newPage();
     
     // Create test page
@@ -41,9 +41,9 @@ test.describe('Line Highlighter v2.1 Features', () => {
     
     await page.waitForTimeout(500);
     
-    // Test Cmd+Shift+L toggle
+    // Test Ctrl+; (or Cmd+; on Mac) toggle
     const modifierKey = process.platform === 'darwin' ? 'Meta' : 'Control';
-    await page.keyboard.press(`${modifierKey}+Shift+l`);
+    await page.keyboard.press(`${modifierKey}+Semicolon`);
     await page.waitForTimeout(500);
     
     // Click on text
@@ -157,10 +157,10 @@ test.describe('Line Highlighter v2.1 Features', () => {
   });
 
   test('should have working extension icons', async () => {
-    // Check that icon files exist and are valid
+    // Check that icon files exist
     const iconPaths = [
-      'src/icons/highlighter-inactive.svg',
-      'src/icons/highlighter-active.svg'
+      'assets/icons/inactive.png',
+      'assets/icons/active.png'
     ];
     
     for (const iconPath of iconPaths) {
@@ -169,10 +169,9 @@ test.describe('Line Highlighter v2.1 Features', () => {
       expect(exists).toBeTruthy();
       
       if (exists) {
-        const content = fs.readFileSync(fullPath, 'utf8');
-        expect(content).toContain('<svg');
-        expect(content).toContain('</svg>');
-        console.log(`${iconPath} is valid SVG`);
+        const stats = fs.statSync(fullPath);
+        expect(stats.size).toBeGreaterThan(0);
+        console.log(`${iconPath} exists and is ${stats.size} bytes`);
       }
     }
   });
