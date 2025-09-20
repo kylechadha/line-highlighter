@@ -6,24 +6,26 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 Line Highlighter is a Chrome extension that helps users track their reading position on web pages by displaying a full-width yellow highlight line wherever they click, along with an optional blinking cursor.
 
 ## Architecture
-- **manifest.json**: Chrome extension manifest (v2) defining permissions, content scripts, and browser action
-- **content-script.js**: Core logic injected into all web pages, handles user interactions and line positioning
-- **styles.css**: Styling for the highlight line, cursor, and popup controls
-- **popup.html**: Browser action popup displaying keyboard controls
-- **jquery.min.js**: jQuery library dependency for DOM manipulation
+- **manifest.json**: Chrome extension manifest (v3) defining permissions, content scripts, and action
+- **src/content-script.js**: Core logic injected into all web pages, handles user interactions and line positioning
+- **src/popup.js**: Popup script handling UI interactions and settings management
+- **src/popup-styles.css**: Styling for the popup interface
+- **src/popup.html**: Extension popup displaying controls and settings
+- **src/background.js**: Service worker managing extension state and icon updates
 
 ## Key Implementation Details
-- The extension uses jQuery for DOM manipulation and event handling
+- The extension uses vanilla JavaScript (no jQuery dependency)
 - Line marker is positioned absolutely with max z-index (2147483647) to stay on top
 - CSS blend mode (multiply) is used to make the yellow line blend naturally with page content
 - Pointer events are disabled on the line marker to prevent interference with page interactions
-- State management tracks enabled/disabled status and first-time initialization
+- State management tracks enabled/disabled status per tab in background service worker
 
 ## Development Notes
-- No build process required - this is a vanilla JavaScript Chrome extension
-- Extension uses Manifest V2 (consider migration to V3 for future Chrome compatibility)
+- Simple build process creates versioned zip files for distribution
+- Extension uses Manifest V3 with service worker architecture
 - Testing requires loading the extension as an unpacked extension in Chrome Developer Mode
 - The extension works on all HTTP/HTTPS sites as defined in the content script matches
+- Uses npm for dependency management (Playwright for testing)
 
 ## Testing Requirements
 **CRITICAL**: ALWAYS test changes before committing. Run tests after EVERY change.
@@ -169,8 +171,45 @@ When creating PRs:
 - Keep focus on what changed, not process
 
 ### Commit Message Convention
-Use clear, descriptive commit messages:
-- Start with imperative verb (Add, Fix, Update, Remove)
+**IMPORTANT**: Use conventional commits for automated versioning with Release-Please:
+
+#### Commit Types (determines version bump):
+- `feat:` - New features (triggers MINOR version bump, e.g., 2.1.0 → 2.2.0)
+- `fix:` - Bug fixes (triggers PATCH version bump, e.g., 2.1.0 → 2.1.1)
+- `feat!:` or `BREAKING CHANGE:` - Breaking changes (triggers MAJOR version bump, e.g., 2.1.0 → 3.0.0)
+- `chore:` - Maintenance tasks (no version bump)
+- `docs:` - Documentation only (no version bump)
+- `style:` - Code style changes (no version bump)
+- `refactor:` - Code refactoring (no version bump)
+- `test:` - Test changes (no version bump)
+- `ci:` - CI/CD changes (no version bump)
+
+#### Guidelines:
+- Always think about the highest level of change when committing
+- If a commit includes both features and fixes, use `feat:` (higher precedence)
 - Keep first line under 72 characters
-- Add bullet points for multiple changes
-- Example: "Fix popup UI spacing issues"
+- Add detailed description after blank line if needed
+
+#### Examples:
+- `feat: add dark mode support`
+- `fix: correct keyboard shortcut handling on Mac`
+- `chore: remove unnecessary activeTab permission`
+- `feat!: migrate to Manifest V3`
+
+## Release Process
+
+### Automated with Release-Please
+1. **Development**: All work happens on `develop` branch with conventional commits
+2. **Release PR**: Release-Please automatically creates/updates a PR from develop to master
+3. **Version Bump**: When PR is merged, Release-Please:
+   - Updates version in manifest.json and package.json
+   - Updates CHANGELOG.md
+   - Creates git tag
+   - Creates GitHub release with built extension zip
+4. **Chrome Web Store**: Automatically publishes for feat/fix releases (not chore/docs)
+
+### GitHub Secrets Required for Automation
+- `CHROME_EXTENSION_ID`: Extension ID from Chrome Web Store
+- `CHROME_CLIENT_ID`: OAuth client ID for Chrome Web Store API
+- `CHROME_CLIENT_SECRET`: OAuth client secret
+- `CHROME_REFRESH_TOKEN`: OAuth refresh token
