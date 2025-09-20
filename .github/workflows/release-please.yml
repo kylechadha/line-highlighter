@@ -20,7 +20,7 @@ jobs:
           package-name: line-highlighter
           target-branch: master
           pull-request-title-pattern: "Release v${version}"
-          pull-request-header: "Release v${version}"
+          pull-request-header: "Release Notes"
           
       # The following steps only run if a release was created
       - uses: actions/checkout@v3
