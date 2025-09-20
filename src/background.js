@@ -6,26 +6,14 @@ const tabStates = new Map();
 
 // Update icon based on state
 function updateIcon(tabId, enabled) {
-  // Use PNG icon
-  const iconPath = enabled ? 'assets/icons/active.png' : 'assets/icons/inactive.png';
+  // Use PNG icon with absolute path
+  const iconPath = enabled ? '/assets/icons/active.png' : '/assets/icons/inactive.png';
   
   chrome.action.setIcon({
     path: {
       "128": iconPath
     },
     tabId: tabId
-  }).catch(err => {
-    // Fallback to badge if icon fails
-    console.log('Icon failed, using badge:', err);
-    chrome.action.setBadgeText({
-      text: enabled ? 'ON' : '',
-      tabId: tabId
-    });
-    
-    chrome.action.setBadgeBackgroundColor({
-      color: enabled ? '#FFE066' : '#666666',
-      tabId: tabId
-    });
   });
 }
 
@@ -67,7 +55,7 @@ chrome.runtime.onInstalled.addListener(() => {
   // Set default inactive icon for all tabs
   chrome.action.setIcon({
     path: {
-      "128": "assets/icons/inactive.png"
+      "128": "/assets/icons/inactive.png"
     }
   });
 });
