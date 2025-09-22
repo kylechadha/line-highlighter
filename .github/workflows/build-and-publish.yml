@@ -32,7 +32,9 @@ jobs:
       
       - name: Get version
         id: version
-        run: echo "VERSION=$(grep '\"version\"' manifest.json | sed 's/.*\"version\": \"\\(.*\\)\".*/\\1/')" >> $GITHUB_OUTPUT
+        run: |
+          VERSION=$(grep '"version"' manifest.json | sed 's/.*"version": "\(.*\)".*/\1/')
+          echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
       
       - name: Upload to Chrome Web Store
         uses: trmcnvn/chrome-addon@v2
