@@ -13,14 +13,14 @@ jobs:
   release-please:
     runs-on: ubuntu-latest
     steps:
-      - uses: google-github-actions/release-please-action@v3
+      - uses: googleapis/release-please-action@v4
         id: release
         with:
           release-type: node
           package-name: line-highlighter
           target-branch: master
           pull-request-title-pattern: "Release v${version}"
-          pull-request-header: "Release v${version}"
+          pull-request-header: "Release Notes"
           
       # The following steps only run if a release was created
       - uses: actions/checkout@v3
