@@ -5,6 +5,17 @@ All notable changes to Line Highlighter will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.1.1](https://github.com/kylechadha/line-highlighter/compare/v2.1.0...v2.1.1) (2025-09-22)
+
+
+### Bug Fixes
+
+* correct YAML syntax and Release-Please header ([1da4e60](https://github.com/kylechadha/line-highlighter/commit/1da4e603455514890968cefa2bc00a46fdd9429c))
+* replace SVG icons with PNG for better compatibility ([714e745](https://github.com/kylechadha/line-highlighter/commit/714e745a44f98318cab3911dc42277dce6a0c98f))
+* upgrade to Release-Please v4 and fix YAML syntax error ([c8efe3f](https://github.com/kylechadha/line-highlighter/commit/c8efe3f07c5905f3c84d31fa8670b13bbcb61f3b))
+* use absolute paths for extension icons ([b7d2bd2](https://github.com/kylechadha/line-highlighter/commit/b7d2bd24607a1338ce453da0671c54e0969676c7))
+* workflow syntax error ([99aaefa](https://github.com/kylechadha/line-highlighter/commit/99aaefa78a2b3020049da14b5549b8e8fb3f7538))
+
 ## [2.1.0] - 2024-09-15
 
 ### Added
