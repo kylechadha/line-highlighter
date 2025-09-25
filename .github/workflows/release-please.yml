@@ -17,7 +17,6 @@ jobs:
         id: release
         with:
           release-type: node
-          package-name: line-highlighter
           target-branch: master
           
       # The following steps only run if a release was created
