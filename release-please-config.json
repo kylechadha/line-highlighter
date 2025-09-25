@@ -17,7 +17,11 @@
         {"type": "ci", "section": "Continuous Integration", "hidden": true}
       ],
       "extra-files": [
-        "manifest.json"
+        {
+          "type": "json",
+          "path": "manifest.json",
+          "jsonpath": "$.version"
+        }
       ],
       "pull-request-header": "",
       "pull-request-title-pattern": "Release v${version}"
