@@ -107,6 +107,7 @@ Controls are handled in content-script.js (v2.1 defaults):
 - **master**: Production branch for releases
 - Feature branches created from develop
 - PRs from develop to master for releases
+- **CRITICAL**: NEVER commit directly to master - all changes must go through develop and PR process
 
 ### Pull Request Guidelines
 When creating PRs:
