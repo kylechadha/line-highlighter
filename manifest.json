@@ -3,7 +3,7 @@
   "name": "Line Highlighter",
   "description": "Line Highlighter highlights your current position on any website, allowing you to easily keep track of where you are",
   "homepage_url": "https://github.com/kylechadha/line-highlighter",
-  "version": "2.1.0",
+  "version": "2.1.3",
   "permissions": ["storage"],
   "background": {
     "service_worker": "src/background.js"
