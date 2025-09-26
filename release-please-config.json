@@ -17,15 +17,15 @@
         {"type": "ci", "section": "Continuous Integration", "hidden": true}
       ],
       "pull-request-header": "",
-      "pull-request-title-pattern": "Release v${version}"
+      "pull-request-title-pattern": "Release v${version}",
+      "extra-files": [
+        {
+          "type": "json",
+          "path": "manifest.json",
+          "jsonpath": "$.version"
+        }
+      ]
     }
   },
-  "extra-files": [
-    {
-      "type": "json",
-      "path": "manifest.json",
-      "jsonpath": "$.version"
-    }
-  ],
   "$schema": "https://raw.githubusercontent.com/googleapis/release-please/main/schemas/config.json"
 }
