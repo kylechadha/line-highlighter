@@ -5,6 +5,16 @@ All notable changes to Line Highlighter will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.1.3](https://github.com/kylechadha/line-highlighter/compare/v2.1.2...v2.1.3) (2025-09-26)
+
+
+### Bug Fixes
+
+* configure Release-Please to update manifest.json version field ([4e653c5](https://github.com/kylechadha/line-highlighter/commit/4e653c57943bd4e3288353dea4c8d67997472dd7))
+* configure Release-Please to update manifest.json version field ([d8b64ee](https://github.com/kylechadha/line-highlighter/commit/d8b64ee9e67ac55dfaa757ec1dc0ebb513a417c5))
+* move extra-files to root level in Release-Please config ([c9d9c36](https://github.com/kylechadha/line-highlighter/commit/c9d9c36ca18f054855fc75d43c800719baac4229))
+* move extra-files to root level in Release-Please config ([a17bdcf](https://github.com/kylechadha/line-highlighter/commit/a17bdcf0b6d9b341830e32881b54651fbdc141d2))
+
 ## [2.1.2](https://github.com/kylechadha/line-highlighter/compare/v2.1.1...v2.1.2) (2025-09-25)
 
 
