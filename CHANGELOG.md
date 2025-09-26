@@ -5,6 +5,29 @@ All notable changes to Line Highlighter will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.1.4](https://github.com/kylechadha/line-highlighter/compare/line-highlighter-v2.1.3...line-highlighter-v2.1.4) (2025-09-26)
+
+
+### Bug Fixes
+
+* configure Release-Please to properly update manifest.json ([35d5f03](https://github.com/kylechadha/line-highlighter/commit/35d5f039d7a90d339c89b586fc03c6dbc0764c0f))
+* configure Release-Please to update manifest.json version field ([4e653c5](https://github.com/kylechadha/line-highlighter/commit/4e653c57943bd4e3288353dea4c8d67997472dd7))
+* configure Release-Please to update manifest.json version field ([d8b64ee](https://github.com/kylechadha/line-highlighter/commit/d8b64ee9e67ac55dfaa757ec1dc0ebb513a417c5))
+* correct YAML syntax and Release-Please header ([1da4e60](https://github.com/kylechadha/line-highlighter/commit/1da4e603455514890968cefa2bc00a46fdd9429c))
+* document post-release sync process ([e1b9f95](https://github.com/kylechadha/line-highlighter/commit/e1b9f9563700ffdd70558aa1f86daab77673a98e))
+* document post-release sync process to prevent duplicate commits ([f6c4878](https://github.com/kylechadha/line-highlighter/commit/f6c48789853474f088fbe2d387193ce7312652ed))
+* move extra-files to packages section and remove release-type from workflow ([1bb1f8c](https://github.com/kylechadha/line-highlighter/commit/1bb1f8c51a3d3f7f29db023d2bd8a024110fb092))
+* move extra-files to root level in Release-Please config ([c9d9c36](https://github.com/kylechadha/line-highlighter/commit/c9d9c36ca18f054855fc75d43c800719baac4229))
+* move extra-files to root level in Release-Please config ([a17bdcf](https://github.com/kylechadha/line-highlighter/commit/a17bdcf0b6d9b341830e32881b54651fbdc141d2))
+* remove invalid package-name input from Release-Please v4 and rename publish workflow ([e9a2b4f](https://github.com/kylechadha/line-highlighter/commit/e9a2b4f7afad33dff8ac6fd592591e9f931d8d2b))
+* remove invalid package-name input from Release-Please v4 and rename publish workflow ([e7afd1f](https://github.com/kylechadha/line-highlighter/commit/e7afd1f53f308334ff3eb09bd81efb6b5c052979))
+* replace SVG icons with PNG for better compatibility ([714e745](https://github.com/kylechadha/line-highlighter/commit/714e745a44f98318cab3911dc42277dce6a0c98f))
+* sync version to 2.1.3 across all files ([465b987](https://github.com/kylechadha/line-highlighter/commit/465b987a45a45143493169a5f87ee2adb821e894))
+* sync version to 2.1.3 across all files for proper release workflow ([98388c3](https://github.com/kylechadha/line-highlighter/commit/98388c38c134f941a80288704b08d826d692c905))
+* upgrade to Release-Please v4 and fix YAML syntax error ([c8efe3f](https://github.com/kylechadha/line-highlighter/commit/c8efe3f07c5905f3c84d31fa8670b13bbcb61f3b))
+* use absolute paths for extension icons ([b7d2bd2](https://github.com/kylechadha/line-highlighter/commit/b7d2bd24607a1338ce453da0671c54e0969676c7))
+* workflow syntax error ([99aaefa](https://github.com/kylechadha/line-highlighter/commit/99aaefa78a2b3020049da14b5549b8e8fb3f7538))
+
 ## [2.1.3](https://github.com/kylechadha/line-highlighter/compare/v2.1.2...v2.1.3) (2025-09-26)
 
 
