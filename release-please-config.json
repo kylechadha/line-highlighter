@@ -16,16 +16,16 @@
         {"type": "build", "section": "Build System", "hidden": true},
         {"type": "ci", "section": "Continuous Integration", "hidden": true}
       ],
-      "extra-files": [
-        {
-          "type": "json",
-          "path": "manifest.json",
-          "jsonpath": "$.version"
-        }
-      ],
       "pull-request-header": "",
       "pull-request-title-pattern": "Release v${version}"
     }
   },
+  "extra-files": [
+    {
+      "type": "json",
+      "path": "manifest.json",
+      "jsonpath": "$.version"
+    }
+  ],
   "$schema": "https://raw.githubusercontent.com/googleapis/release-please/main/schemas/config.json"
 }
