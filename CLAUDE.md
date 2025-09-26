@@ -149,12 +149,13 @@ When creating PRs:
 1. **Development**: All work happens on `develop` branch with conventional commits
 2. **Ready to Release**: Manually create PR from `develop` to `master`
 3. **Release PR**: After merging to master, Release-Please creates a Release PR on master with:
-   - Version bumps in manifest.json and package.json
+   - Version bumps in manifest.json, package.json, and package-lock.json
    - Updated CHANGELOG.md
 4. **Publish**: When Release PR is merged:
    - Creates git tag
    - Creates GitHub release with built extension zip
    - Automatically publishes to Chrome Web Store for feat/fix releases
+5. **Post-Release**: Merge master back to develop to keep branches in sync
 
 ### GitHub Secrets Required for Automation
 - `CHROME_EXTENSION_ID`: Extension ID from Chrome Web Store
