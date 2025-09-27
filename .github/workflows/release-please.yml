@@ -12,6 +12,9 @@ permissions:
 jobs:
   release-please:
     runs-on: ubuntu-latest
+    outputs:
+      release_created: ${{ steps.release.outputs.release_created }}
+      version: ${{ steps.release.outputs.major }}.${{ steps.release.outputs.minor }}.${{ steps.release.outputs.patch }}
     steps:
       - uses: googleapis/release-please-action@v4
         id: release
@@ -38,3 +41,45 @@ jobs:
           asset_path: ./build/line-highlighter-v${{ steps.release.outputs.major }}.${{ steps.release.outputs.minor }}.${{ steps.release.outputs.patch }}.zip
           asset_name: line-highlighter-v${{ steps.release.outputs.major }}.${{ steps.release.outputs.minor }}.${{ steps.release.outputs.patch }}.zip
           asset_content_type: application/zip
+      
+      - name: Sync version to develop
+        if: ${{ steps.release.outputs.release_created }}
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git fetch origin develop
+          git checkout develop
+          git merge --ff-only origin/master
+          git push origin develop
+
+  publish-chrome-store:
+    needs: release-please
+    if: |
+      needs.release-please.outputs.release_created == 'true' &&
+      (contains(github.event.head_commit.message, 'feat:') || 
+       contains(github.event.head_commit.message, 'fix:') ||
+       contains(github.event.head_commit.message, 'feat!:') ||
+       contains(github.event.head_commit.message, 'BREAKING'))
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+      
+      - name: Install dependencies
+        run: npm install
+      
+      - name: Build extension
+        run: npm run build
+      
+      - name: Upload to Chrome Web Store
+        uses: trmcnvn/chrome-addon@v2
+        with:
+          extension: ${{ secrets.CHROME_EXTENSION_ID }}
+          zip: ./build/line-highlighter-v${{ needs.release-please.outputs.version }}.zip
+          client-id: ${{ secrets.CHROME_CLIENT_ID }}
+          client-secret: ${{ secrets.CHROME_CLIENT_SECRET }}
+          refresh-token: ${{ secrets.CHROME_REFRESH_TOKEN }}

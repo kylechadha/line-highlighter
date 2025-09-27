@@ -1,7 +1,7 @@
 {
   "name": "line-highlighter",
   "version": "2.1.4",
-  "description": "Lose track of how far you've read on a web page? Line Highlighter is a browser extension that highlights your current position on any website, allowing you to easily keep track of where you are. The highlighter snaps to text and allows you to easily move through the page",
+  "description": "Lose track of how far you've read on a web page? Line Highlighter is a simple, privacy focused extension that highlights your current position on any website",
   "author": "Kyle Chadha",
   "scripts": {
     "build": "rm -rf build && mkdir -p build && VERSION=$(grep '\"version\"' manifest.json | sed 's/.*\"version\": \"\\(.*\\)\".*/\\1/') && zip -r build/line-highlighter-v${VERSION}.zip manifest.json src/ assets/ -x '*.DS_Store' && echo \"Built: build/line-highlighter-v${VERSION}.zip\"",
