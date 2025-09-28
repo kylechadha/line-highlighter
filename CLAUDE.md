@@ -174,3 +174,17 @@ When creating PRs:
 - `CHROME_CLIENT_ID`: OAuth client ID for Chrome Web Store API
 - `CHROME_CLIENT_SECRET`: OAuth client secret
 - `CHROME_REFRESH_TOKEN`: OAuth refresh token
+
+## Todo List (Future Improvements)
+
+### 1. Switch to activeTab Permission Model
+- Remove content_scripts from manifest (less invasive)
+- Use activeTab permission for on-demand script injection
+- Inject content script only when user activates extension
+- More privacy-friendly, fewer permissions warnings
+
+### 2. Onboarding Notification
+- Show welcome popup on install with keyboard shortcut info
+- Use chrome.runtime.onInstalled to detect fresh install
+- Display notification or open welcome page with instructions
+- Explain Chrome's customizable shortcuts

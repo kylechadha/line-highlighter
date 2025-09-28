@@ -30,5 +30,16 @@
   },
   "icons": {
     "128": "assets/icons/inactive.png"
+  },
+  "commands": {
+    "toggle-highlighter": {
+      "suggested_key": {
+        "mac": "Alt+L",
+        "windows": "Alt+L",
+        "linux": "Alt+L",
+        "chromeos": "Alt+L"
+      },
+      "description": "Toggle line highlighter"
+    }
   }
 }

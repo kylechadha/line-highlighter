@@ -201,6 +201,56 @@ h2 {
   transform: scale(1.02);
 }
 
+/* Chrome-managed shortcut styles */
+.chrome-shortcut-item {
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.chrome-shortcut-wrapper {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.chrome-shortcut {
+  font-family: "SF Mono", Monaco, "Courier New", monospace;
+  font-size: 12px;
+  font-weight: 500;
+  color: #666;
+  padding: 6px 10px;
+  background: #f4f4f4;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  min-width: 80px;
+  text-align: center;
+}
+
+.chrome-shortcut-hint {
+  font-size: 11px;
+  color: #888;
+  margin-top: 4px;
+  margin-left: 90px;
+}
+
+.manage-btn {
+  font-size: 11px;
+  font-weight: 500;
+  color: #0066cc;
+  background: transparent;
+  border: 1px solid #0066cc;
+  border-radius: 4px;
+  cursor: pointer;
+  padding: 4px 10px;
+  transition: all 0.2s ease;
+}
+
+.manage-btn:hover {
+  background: #0066cc;
+  color: white;
+}
+
 /* Color Picker */
 .color-grid {
   display: grid;
