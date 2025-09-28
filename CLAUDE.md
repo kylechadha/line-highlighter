@@ -152,10 +152,22 @@ When creating PRs:
    - Version bumps in manifest.json, package.json, and package-lock.json
    - Updated CHANGELOG.md
 4. **Publish**: When Release PR is merged:
-   - Creates git tag
+   - Creates git tag (format: `v2.1.4`)
    - Creates GitHub release with built extension zip
    - Automatically publishes to Chrome Web Store for feat/fix releases
-5. **Post-Release**: Merge master back to develop to keep branches in sync
+   - Auto-syncs version back to develop via fast-forward merge
+5. **Post-Release**: Version automatically synced to develop (no manual merge needed)
+
+### Release Please Configuration
+**IMPORTANT**: Must use manifest/config files approach, NOT `release-type` in workflow
+- Bug: https://github.com/googleapis/release-please-action/issues/941
+- When `release-type: node` is in workflow YAML, `extra-files` doesn't work
+- Solution: Use `.release-please-manifest.json` and `release-please-config.json`
+
+### GitHub Actions Limitations
+- **Default Branch Issue**: `release` event workflows only trigger from default branch
+- Since our default is `develop`, releases from `master` won't trigger separate workflows
+- Solution: Combined release-please.yml handles both release and publish in one workflow
 
 ### GitHub Secrets Required for Automation
 - `CHROME_EXTENSION_ID`: Extension ID from Chrome Web Store
