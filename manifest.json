@@ -39,7 +39,7 @@
         "linux": "Alt+L",
         "chromeos": "Alt+L"
       },
-      "description": "Toggle line highlighter"
+      "description": "Activate the extension"
     }
   }
 }

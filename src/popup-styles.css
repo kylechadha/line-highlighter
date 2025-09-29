@@ -202,53 +202,32 @@ h2 {
 }
 
 /* Chrome-managed shortcut styles */
-.chrome-shortcut-item {
-  flex-direction: column;
-  align-items: flex-start;
-}
-
-.chrome-shortcut-wrapper {
-  display: flex;
-  align-items: center;
-  width: 100%;
-  justify-content: space-between;
-}
-
 .chrome-shortcut {
+  flex: 1;
+  max-width: 120px;
+  padding: 6px 10px;
   font-family: "SF Mono", Monaco, "Courier New", monospace;
   font-size: 12px;
   font-weight: 500;
+  text-align: center;
   color: #666;
-  padding: 6px 10px;
   background: #f4f4f4;
   border: 1px solid #e0e0e0;
   border-radius: 4px;
-  min-width: 80px;
-  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.chrome-shortcut:hover {
+  background: #e8e8e8;
+  border-color: #999;
 }
 
 .chrome-shortcut-hint {
   font-size: 11px;
   color: #888;
-  margin-top: 4px;
-  margin-left: 90px;
-}
-
-.manage-btn {
-  font-size: 11px;
-  font-weight: 500;
-  color: #0066cc;
-  background: transparent;
-  border: 1px solid #0066cc;
-  border-radius: 4px;
-  cursor: pointer;
-  padding: 4px 10px;
-  transition: all 0.2s ease;
-}
-
-.manage-btn:hover {
-  background: #0066cc;
-  color: white;
+  margin: -4px 0 8px 0;
+  padding-left: 90px;
 }
 
 /* Color Picker */

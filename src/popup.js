@@ -322,23 +322,22 @@ function initColorPicker() {
   });
 }
 
-// Initialize Chrome command display and manage button
+// Initialize Chrome command display and clickable shortcut
 async function initChromeCommand() {
   // Get Chrome commands
   const commands = await chrome.runtime.sendMessage({ type: 'getCommands' });
   const toggleCommand = commands?.find(cmd => cmd.name === 'toggle-highlighter');
   
   // Display the actual shortcut or fallback
-  const shortcutSpan = document.getElementById('chrome-shortcut');
+  const shortcutBtn = document.getElementById('chrome-shortcut');
   if (toggleCommand && toggleCommand.shortcut) {
-    shortcutSpan.textContent = toggleCommand.shortcut;
+    shortcutBtn.textContent = toggleCommand.shortcut;
   } else {
-    shortcutSpan.textContent = 'Not set';
+    shortcutBtn.textContent = 'Not set';
   }
   
-  // Handle manage button click
-  const manageBtn = document.getElementById('manage-shortcuts');
-  manageBtn.addEventListener('click', () => {
+  // Make shortcut clickable to open Chrome settings
+  shortcutBtn.addEventListener('click', () => {
     chrome.tabs.create({ url: 'chrome://extensions/shortcuts' });
   });
 }
