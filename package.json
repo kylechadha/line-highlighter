@@ -1,6 +1,6 @@
 {
   "name": "line-highlighter",
-  "version": "2.3.2",
+  "version": "2.3.3",
   "description": "Lose track of how far you've read on a web page? Line Highlighter is a simple, privacy focused extension that highlights your current position on any website",
   "author": "Kyle Chadha",
   "scripts": {
