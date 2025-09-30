@@ -67,8 +67,8 @@ test.describe('Core Tests - Manifest and Build', () => {
     expect(popupContent).not.toContain('id="popup-shortcut"');
     expect(popupContent).not.toContain('Open popup:');
     
-    // Check for Chrome shortcut hint
-    expect(popupContent).toContain('Managed in browser settings');
+    // Check that "Managed in browser settings" was removed
+    expect(popupContent).not.toContain('Managed in browser settings');
   });
 
   test('test helpers should work correctly', () => {

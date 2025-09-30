@@ -96,7 +96,7 @@ h1 {
 
 /* Sections */
 .section {
-  margin-bottom: 16px;
+  margin-bottom: 20px;
 }
 
 .section:last-child {
@@ -134,7 +134,7 @@ h2 {
 
 .chrome-shortcut-section {
   background: #ececec;
-  padding: 8px 12px;
+  padding: 0;
   position: relative;
 }
 
@@ -146,7 +146,7 @@ h2 {
 }
 
 .chrome-shortcut-section .shortcut-item {
-  padding: 6px 0;
+  padding: 8px 12px;
 }
 
 .shortcut-item label {
@@ -213,7 +213,6 @@ h2 {
   flex: 1;
   max-width: 120px;
   padding: 6px 10px;
-  padding-right: 24px;
   font-family: "SF Mono", Monaco, "Courier New", monospace;
   font-size: 12px;
   font-weight: 500;
@@ -224,16 +223,22 @@ h2 {
   cursor: pointer;
   transition: all 0.2s ease;
   position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .chrome-shortcut::after {
-  content: "↗";
+  content: "";
   position: absolute;
-  right: 8px;
+  right: 5px;
   top: 50%;
   transform: translateY(-50%);
-  font-size: 11px;
-  color: #999;
+  width: 18px;
+  height: 18px;
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%23999" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>');
+  background-size: contain;
+  background-repeat: no-repeat;
 }
 
 .chrome-shortcut:hover {
@@ -241,14 +246,7 @@ h2 {
   background: #fafafa;
 }
 
-.chrome-shortcut-hint {
-  position: absolute;
-  top: 4px;
-  right: 8px;
-  font-size: 10px;
-  color: #999;
-  font-style: italic;
-}
+/* Removed - no longer needed */
 
 /* Color Picker */
 .color-grid {
