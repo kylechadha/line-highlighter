@@ -248,6 +248,29 @@ h2 {
 
 /* Removed - no longer needed */
 
+/* Welcome shimmer animation */
+.chrome-shortcut-section.pulse-welcome {
+  background: linear-gradient(
+    90deg,
+    #ececec 0%,
+    #ececec 40%,
+    #f6f6f6 50%,
+    #ececec 60%,
+    #ececec 100%
+  );
+  background-size: 200% 100%;
+  animation: welcomeShimmer 1s ease-out 1 forwards;
+}
+
+@keyframes welcomeShimmer {
+  0% {
+    background-position: -100% 0;
+  }
+  100% {
+    background-position: 100% 0;
+  }
+}
+
 /* Color Picker */
 .color-grid {
   display: grid;

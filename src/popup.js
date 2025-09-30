@@ -43,7 +43,31 @@ document.addEventListener('DOMContentLoaded', async () => {
   initColorPicker();
   updateShortcutDisplay();
   initChromeCommand();
+  
+  // Check if we should show welcome animation
+  checkWelcomeAnimation();
 });
+
+async function checkWelcomeAnimation() {
+  const result = await chrome.storage.local.get('showWelcome');
+  if (result.showWelcome) {
+    // Add pulse animation to the whole Chrome shortcut section
+    const chromeSection = document.querySelector('.chrome-shortcut-section');
+    if (chromeSection) {
+      chromeSection.classList.add('pulse-welcome');
+      
+      // Remove the animation class after it completes (1s)
+      setTimeout(() => {
+        chromeSection.classList.remove('pulse-welcome');
+        // Reset background to normal
+        chromeSection.style.background = '';
+      }, 1000);
+    }
+    
+    // Clear the flag so it doesn't show again
+    chrome.storage.local.remove('showWelcome');
+  }
+}
 
 async function loadSettings() {
   try {
