@@ -7,3 +7,4 @@ playwright-report/
 playwright/.cache/
 build/
 .scratch
+tests/screenshots/

@@ -40,6 +40,12 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
       type: 'setEnabled',
       enabled: message.enabled
     });
+  } else if (message.type === 'getCommands') {
+    // Popup is asking for Chrome commands
+    chrome.commands.getAll().then(commands => {
+      sendResponse(commands);
+    });
+    return true; // Keep channel open for async response
   }
   
   return true; // Keep message channel open for async response
@@ -58,4 +64,23 @@ chrome.runtime.onInstalled.addListener(() => {
       "128": "/assets/icons/inactive.png"
     }
   });
+});
+
+// Handle Chrome keyboard commands
+chrome.commands.onCommand.addListener((command, tab) => {
+  if (command === 'toggle-highlighter' && tab) {
+    // Get current state
+    const currentState = tabStates.get(tab.id) || false;
+    const newState = !currentState;
+    
+    // Update state
+    tabStates.set(tab.id, newState);
+    updateIcon(tab.id, newState);
+    
+    // Send toggle message to content script
+    chrome.tabs.sendMessage(tab.id, {
+      type: 'setEnabled',
+      enabled: newState
+    });
+  }
 });

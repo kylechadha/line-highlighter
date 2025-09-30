@@ -42,6 +42,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   initShortcutInputs();
   initColorPicker();
   updateShortcutDisplay();
+  initChromeCommand();
 });
 
 async function loadSettings() {
@@ -135,7 +136,6 @@ function initToggleButton(initialState, tabId) {
 
 function initShortcutInputs() {
   const inputs = {
-    toggle: document.getElementById('shortcut-toggle'),
     up: document.getElementById('shortcut-up'),
     down: document.getElementById('shortcut-down')
   };
@@ -246,7 +246,6 @@ function initShortcutInputs() {
 
 function updateShortcutDisplay() {
   const inputs = {
-    toggle: document.getElementById('shortcut-toggle'),
     up: document.getElementById('shortcut-up'),
     down: document.getElementById('shortcut-down')
   };
@@ -321,4 +320,28 @@ function initColorPicker() {
       saveSettings();
     });
   });
+}
+
+// Initialize Chrome command display and clickable shortcut
+async function initChromeCommand() {
+  // Get Chrome commands
+  const commands = await chrome.runtime.sendMessage({ type: 'getCommands' });
+  
+  // Find the toggle command
+  const toggleCommand = commands?.find(cmd => cmd.name === 'toggle-highlighter');
+  
+  // Display toggle shortcut
+  const toggleBtn = document.getElementById('toggle-shortcut');
+  if (toggleBtn) {
+    if (toggleCommand && toggleCommand.shortcut) {
+      toggleBtn.textContent = toggleCommand.shortcut;
+    } else {
+      toggleBtn.textContent = 'Not set';
+    }
+    
+    // Make clickable to open Chrome settings
+    toggleBtn.addEventListener('click', () => {
+      chrome.tabs.create({ url: 'chrome://extensions/shortcuts' });
+    });
+  }
 }
