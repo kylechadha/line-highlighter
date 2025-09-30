@@ -23,7 +23,8 @@
           "path": "manifest.json",
           "jsonpath": "$.version"
         }
-      ]
+      ],
+      "exclude-merge-commits": true
     }
   },
   "$schema": "https://raw.githubusercontent.com/googleapis/release-please/main/schemas/config.json"
