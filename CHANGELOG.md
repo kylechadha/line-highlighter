@@ -5,6 +5,23 @@ All notable changes to Line Highlighter will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.2.0](https://github.com/kylechadha/line-highlighter/compare/line-highlighter-v2.1.4...line-highlighter-v2.2.0) (2025-09-30)
+
+
+### Features
+
+* add Chrome commands API integration for toggle shortcut ([a1136c5](https://github.com/kylechadha/line-highlighter/commit/a1136c5051005dbc63a65c582c6f8c48c7041d45))
+* Chrome keyboard shortcuts and streamlined UI ([21f814b](https://github.com/kylechadha/line-highlighter/commit/21f814bfc03667fb242a6d5a4a333b6e3704bcee))
+* implement Chrome keyboard shortcuts and streamline UI ([ee11509](https://github.com/kylechadha/line-highlighter/commit/ee11509f4859d8adb37222447e78aee7fc7683b6))
+
+
+### Bug Fixes
+
+* finalize popup UI improvements ([ece155a](https://github.com/kylechadha/line-highlighter/commit/ece155aeb0b2011735e23fc263a104881011fc0f))
+* improve Chrome commands UI and remove duplicate entry ([afcae6c](https://github.com/kylechadha/line-highlighter/commit/afcae6ce399cb78c98ac7fdcdcb10cae0a6d97c0))
+* update release workflow ([2f46a02](https://github.com/kylechadha/line-highlighter/commit/2f46a02ec512dc384735ea95e5d2588f5488f346))
+* update release workflow to hopefully auto-publish and sync ([012811e](https://github.com/kylechadha/line-highlighter/commit/012811ec64795fc0e78ebbe68e4e410533172286))
+
 ## [2.1.4](https://github.com/kylechadha/line-highlighter/compare/v2.1.3...v2.1.4) (2025-09-26)
 
 
