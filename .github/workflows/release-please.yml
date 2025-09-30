@@ -48,8 +48,8 @@ jobs:
           git config user.email 41898282+github-actions[bot]@users.noreply.github.com
           # Fetch the develop branch explicitly
           git fetch origin develop:refs/remotes/origin/develop
-          # Checkout develop tracking origin/develop
-          git checkout -b develop origin/develop
+          # Checkout existing develop branch
+          git checkout develop
           # Fast-forward merge master into develop
           git merge --ff-only origin/master
           # Push the updated develop branch
