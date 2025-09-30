@@ -57,13 +57,22 @@ chrome.tabs.onRemoved.addListener((tabId) => {
 });
 
 // Set default icon on install/update
-chrome.runtime.onInstalled.addListener(() => {
+chrome.runtime.onInstalled.addListener((details) => {
   // Set default inactive icon for all tabs
   chrome.action.setIcon({
     path: {
       "128": "/assets/icons/inactive.png"
     }
   });
+  
+  // Open popup on first install
+  if (details.reason === 'install') {
+    // Mark that we should show welcome animation
+    chrome.storage.local.set({ showWelcome: true });
+    
+    // Open the popup
+    chrome.action.openPopup();
+  }
 });
 
 // Handle Chrome keyboard commands

@@ -130,3 +130,17 @@ These require a properly loaded extension in Chrome and should be tested manuall
 - Semicolon (`;`) is not supported by Chrome commands API
 - `_execute_action` always opens popup when defined
 - Custom commands can coexist with `_execute_action`
+
+## Future Improvements
+
+### 1. Switch to activeTab Permission Model
+- Remove content_scripts from manifest (less invasive)
+- Use activeTab permission for on-demand script injection
+- Inject content script only when user activates extension
+- More privacy-friendly, fewer permissions warnings
+
+### 2. Onboarding Notification
+- Show welcome popup on install with keyboard shortcut info
+- Use chrome.runtime.onInstalled to detect fresh install
+- Display notification or open welcome page with instructions
+- Explain Chrome's customizable shortcuts
