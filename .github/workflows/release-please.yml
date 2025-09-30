@@ -47,10 +47,13 @@ jobs:
         run: |
           git config user.name github-actions[bot]
           git config user.email 41898282+github-actions[bot]@users.noreply.github.com
-          git reset --hard  # Clear any uncommitted changes from npm install
-          git fetch origin develop
-          git checkout develop
+          # Fetch the develop branch explicitly
+          git fetch origin develop:refs/remotes/origin/develop
+          # Checkout develop tracking origin/develop
+          git checkout -b develop origin/develop
+          # Fast-forward merge master into develop
           git merge --ff-only origin/master
+          # Push the updated develop branch
           git push origin develop
 
   publish-chrome-store:
