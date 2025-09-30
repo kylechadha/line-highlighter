@@ -5,6 +5,14 @@ All notable changes to Line Highlighter will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.3.0](https://github.com/kylechadha/line-highlighter/compare/line-highlighter-v2.2.0...line-highlighter-v2.3.0) (2025-09-30)
+
+
+### Features
+
+* add onboarding shimmer animation ([e1351d9](https://github.com/kylechadha/line-highlighter/commit/e1351d975c94b391af46c0c53c54b3cf33c6aad9))
+* onboarding animation and workflow fixes ([a2f0cbc](https://github.com/kylechadha/line-highlighter/commit/a2f0cbc93ccc89d413be6f94eb7c95d85a4dee72))
+
 ## [2.2.0](https://github.com/kylechadha/line-highlighter/compare/line-highlighter-v2.1.4...line-highlighter-v2.2.0) (2025-09-30)
 
 
