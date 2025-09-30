@@ -326,18 +326,22 @@ function initColorPicker() {
 async function initChromeCommand() {
   // Get Chrome commands
   const commands = await chrome.runtime.sendMessage({ type: 'getCommands' });
+  
+  // Find the toggle command
   const toggleCommand = commands?.find(cmd => cmd.name === 'toggle-highlighter');
   
-  // Display the actual shortcut or fallback
-  const shortcutBtn = document.getElementById('chrome-shortcut');
-  if (toggleCommand && toggleCommand.shortcut) {
-    shortcutBtn.textContent = toggleCommand.shortcut;
-  } else {
-    shortcutBtn.textContent = 'Not set';
+  // Display toggle shortcut
+  const toggleBtn = document.getElementById('toggle-shortcut');
+  if (toggleBtn) {
+    if (toggleCommand && toggleCommand.shortcut) {
+      toggleBtn.textContent = toggleCommand.shortcut;
+    } else {
+      toggleBtn.textContent = 'Not set';
+    }
+    
+    // Make clickable to open Chrome settings
+    toggleBtn.addEventListener('click', () => {
+      chrome.tabs.create({ url: 'chrome://extensions/shortcuts' });
+    });
   }
-  
-  // Make shortcut clickable to open Chrome settings
-  shortcutBtn.addEventListener('click', () => {
-    chrome.tabs.create({ url: 'chrome://extensions/shortcuts' });
-  });
 }

@@ -21,7 +21,7 @@ body {
 }
 
 .container {
-  padding: 20px;
+  padding: 16px;
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -29,7 +29,7 @@ body {
 
 header {
   text-align: center;
-  margin-bottom: 24px;
+  margin-bottom: 18px;
 }
 
 h1 {
@@ -96,7 +96,7 @@ h1 {
 
 /* Sections */
 .section {
-  margin-bottom: 20px;
+  margin-bottom: 16px;
 }
 
 .section:last-child {
@@ -127,19 +127,26 @@ h2 {
 .shortcut-list {
   background: #f8f8f8;
   border-radius: 6px;
-  padding: 12px;
+  padding: 0;
   margin-bottom: 8px;
+  overflow: hidden;
+}
+
+.chrome-shortcut-section {
+  background: #ececec;
+  padding: 8px 12px;
+  position: relative;
 }
 
 .shortcut-item {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 10px;
+  padding: 8px 12px;
 }
 
-.shortcut-item:last-child {
-  margin-bottom: 0;
+.chrome-shortcut-section .shortcut-item {
+  padding: 6px 0;
 }
 
 .shortcut-item label {
@@ -206,28 +213,41 @@ h2 {
   flex: 1;
   max-width: 120px;
   padding: 6px 10px;
+  padding-right: 24px;
   font-family: "SF Mono", Monaco, "Courier New", monospace;
   font-size: 12px;
   font-weight: 500;
   text-align: center;
-  color: #666;
-  background: #f4f4f4;
-  border: 1px solid #e0e0e0;
+  background: #fff;
+  border: 1px solid #d0d0d0;
   border-radius: 4px;
   cursor: pointer;
   transition: all 0.2s ease;
+  position: relative;
+}
+
+.chrome-shortcut::after {
+  content: "↗";
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 11px;
+  color: #999;
 }
 
 .chrome-shortcut:hover {
-  background: #e8e8e8;
   border-color: #999;
+  background: #fafafa;
 }
 
 .chrome-shortcut-hint {
-  font-size: 11px;
-  color: #888;
-  margin: -4px 0 8px 0;
-  padding-left: 90px;
+  position: absolute;
+  top: 4px;
+  right: 8px;
+  font-size: 10px;
+  color: #999;
+  font-style: italic;
 }
 
 /* Color Picker */

@@ -32,14 +32,22 @@
     "128": "assets/icons/inactive.png"
   },
   "commands": {
-    "toggle-highlighter": {
+    "_execute_action": {
       "suggested_key": {
         "mac": "Alt+L",
+        "windows": "Alt+H",
+        "linux": "Alt+H",
+        "chromeos": "Alt+H"
+      }
+    },
+    "toggle-highlighter": {
+      "suggested_key": {
+        "mac": "Ctrl+E",
         "windows": "Alt+L",
         "linux": "Alt+L",
         "chromeos": "Alt+L"
       },
-      "description": "Activate the extension"
+      "description": "Toggle highlighter"
     }
   }
 }
