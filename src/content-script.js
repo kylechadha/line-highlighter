@@ -3,12 +3,8 @@
 
   let state = {
     enabled: false,
-    currentLineElement: null,
-    currentLineRect: null,
     textLines: [],
     currentLineIndex: -1,
-    currentPageY: 0,  // Track absolute page position
-    cursorPosition: 0,  // Track cursor position
     anchor: null  // { node, rectIndex } the line the bar is glued to
   };
 
@@ -131,7 +127,6 @@
     `;
 
     document.body.appendChild(highlighter);
-
   }
 
   function removeHighlighter() {
@@ -141,6 +136,8 @@
       highlighter = null;
     }
     state.anchor = null;
+    state.textLines = [];
+    state.currentLineIndex = -1;
   }
 
   function handleClick(e) {
@@ -151,16 +148,14 @@
       return;
     }
 
-    // Use pageY for absolute positioning
-    const lineInfo = findLineAtClick(e.clientX, e.clientY, e.pageX, e.pageY);
+    const lineInfo = findLineAtClick(e.clientX, e.clientY);
     if (lineInfo) {
-      state.currentPageY = lineInfo.pageY;
       positionHighlighter(lineInfo);
       scanTextLinesNearby(lineInfo);
     }
   }
 
-  function findLineAtClick(clientX, clientY, pageX, pageY) {
+  function findLineAtClick(clientX, clientY) {
     // Try caretPositionFromPoint first
     let caretPos = null;
     if (document.caretPositionFromPoint) {
@@ -198,8 +193,7 @@
               rect: rect,
               node: textNode,
               element: textNode.parentElement,
-              rectIndex: i,
-              pageY: pageY - clientY + rect.top + rect.height / 2
+              rectIndex: i
             };
           }
         }
@@ -234,8 +228,7 @@
           rect: closestRect,
           node: element,
           element: element,
-          rectIndex: closestIndex,
-          pageY: pageY - clientY + closestRect.top + closestRect.height / 2
+          rectIndex: closestIndex
         };
       }
     }
@@ -263,7 +256,9 @@
     const role = (element.getAttribute && element.getAttribute('role') || '').toLowerCase();
     if (role === 'navigation' || role === 'complementary') return true;
 
-    const raw = ((element.className || '') + ' ' + (element.id || '')).toString().toLowerCase();
+    // Use getAttribute('class') so SVG elements (className is an object there) work too.
+    const cls = (element.getAttribute && element.getAttribute('class')) || '';
+    const raw = (cls + ' ' + (element.id || '')).toLowerCase();
     const tokens = raw.split(/\s+/).filter(Boolean);
     return tokens.some(isNavToken);
   }
@@ -330,7 +325,7 @@
       textNodes.push(node);
     }
 
-    // Get line rects for all text nodes
+    // Get one entry per visible line rect across all text nodes
     const allLines = [];
     for (const textNode of textNodes) {
       const range = document.createRange();
@@ -340,23 +335,10 @@
       for (let i = 0; i < rects.length; i++) {
         const rect = rects[i];
         if (rect.height > 5 && rect.height < 100 && rect.width > 20) {
-          // Calculate absolute page position
-          const pageTop = window.pageYOffset + rect.top;
-
-          // Get the actual text content for this line to determine its real width
-          const textContent = textNode.textContent;
-          const textLength = textContent.trim().length;
-
           allLines.push({
-            rect: rect,
             node: textNode,
-            element: textNode.parentElement,
             rectIndex: i,
-            top: rect.top,
-            pageTop: pageTop,
-            left: rect.left,
-            width: rect.width,
-            textLength: textLength
+            pageTop: window.pageYOffset + rect.top  // absolute page position, for ordering
           });
         }
       }
@@ -401,7 +383,10 @@
   }
 
   // Live viewport rect for the anchored line, recomputed from the DOM so it stays
-  // correct through scrolling and reflow. Returns null if the line is gone.
+  // correct through scrolling. Returns null if the line is gone.
+  // Note: rectIndex is positional within the node's client rects, so a reflow that
+  // re-wraps the text (e.g. a window resize) can shift it to a different line. Scroll,
+  // the common case, never reflows, so tracking stays exact there.
   function rectForAnchor(anchor) {
     if (!anchor || !anchor.node || !anchor.node.isConnected) return null;
     const range = document.createRange();
@@ -446,10 +431,11 @@
     });
   }
 
+  // Glue the bar to a line and draw it. animate=true adds the glide/pulse used for
+  // click and keyboard moves; false snaps it (used while tracking scroll).
   function positionHighlighter(lineInfo, animate = false) {
     if (!highlighter || !lineInfo) return;
 
-    state.currentLineRect = lineInfo.rect;
     state.anchor = { node: lineInfo.node, rectIndex: lineInfo.rectIndex };
     renderHighlighter(animate);
   }
@@ -471,8 +457,7 @@
       const lineInfo = state.textLines[newIndex];
 
       // Glue the bar to the new line and glide to it
-      state.anchor = { node: lineInfo.node, rectIndex: lineInfo.rectIndex };
-      renderHighlighter(true);
+      positionHighlighter(lineInfo, true);
 
       // Scroll into view if needed. scrollIntoView walks every scrollable ancestor,
       // so it works whether the page scrolls the window or an inner container.
@@ -528,8 +513,6 @@
         console.log('Line Highlighter: Enabled - Click on text to highlight');
       } else {
         removeHighlighter();
-        state.textLines = [];
-        state.currentLineIndex = -1;
         console.log('Line Highlighter: Disabled');
       }
 
@@ -544,8 +527,9 @@
 
     if (!state.enabled) return;
 
-    // Don't hijack keys while the user is typing in a field
-    const target = e.target;
+    // Don't hijack keys while the user is typing in a field. composedPath()[0]
+    // sees the real target even inside a shadow root (e.target is retargeted).
+    const target = (e.composedPath && e.composedPath()[0]) || e.target;
     if (target && (target.isContentEditable ||
         /^(INPUT|TEXTAREA|SELECT)$/.test(target.tagName))) {
       return;

@@ -73,15 +73,43 @@ test.describe('Core Tests - Manifest and Build', () => {
 
   test('test helpers should work correctly', () => {
     const { getToggleShortcut, getNavigationShortcuts } = require('./test-helpers');
-    
+
     // Should return a shortcut
     const toggleShortcut = getToggleShortcut();
     expect(toggleShortcut).toBeTruthy();
     expect(toggleShortcut).toContain('+');
-    
+
     // Should return navigation shortcuts
     const navShortcuts = getNavigationShortcuts();
     expect(navShortcuts.up).toBe('f');
     expect(navShortcuts.down).toBe('v');
+  });
+});
+
+test.describe('Regression - content script fixes', () => {
+  const csPath = path.join(__dirname, '..', 'src', 'content-script.js');
+  const cs = fs.readFileSync(csPath, 'utf8');
+
+  test('highlight bar uses fixed positioning so it tracks scroll', () => {
+    // position:fixed + a live-rect recompute keeps the bar on its line when an
+    // inner container scrolls (window.pageYOffset stays 0 on those sites, so the
+    // old position:absolute + stored pageTop detached from the text).
+    expect(cs).toContain('position: fixed');
+    expect(cs).not.toContain('position: absolute');
+  });
+
+  test('scroll is tracked in capture phase to catch inner scroll containers', () => {
+    // Inner-container scroll events do not bubble; capture phase is required.
+    expect(cs).toMatch(/addEventListener\(\s*['"]scroll['"]\s*,\s*scheduleRender\s*,\s*true\s*\)/);
+    expect(cs).toContain("addEventListener('resize', scheduleRender)");
+  });
+
+  test('nav filter matches class tokens, not raw substrings', () => {
+    // Guards the bug where the Tailwind token "bg-nav-bg-paper" matched a naive
+    // "nav-" substring (and "protocol" matched "toc"), hiding all page text and
+    // breaking F/V navigation.
+    expect(cs).toContain('isNavLike');
+    expect(cs).not.toContain("includes('nav-')");
+    expect(cs).not.toContain("includes('toc')");
   });
 });
