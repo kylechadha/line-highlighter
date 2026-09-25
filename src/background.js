@@ -39,6 +39,9 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     chrome.tabs.sendMessage(tabId, {
       type: 'setEnabled',
       enabled: message.enabled
+    }).catch(() => {
+      // No content script in this tab (chrome:// page, web store, or a tab
+      // opened before the extension loaded). Safe to ignore.
     });
   } else if (message.type === 'getCommands') {
     // Popup is asking for Chrome commands
@@ -90,6 +93,9 @@ chrome.commands.onCommand.addListener((command, tab) => {
     chrome.tabs.sendMessage(tab.id, {
       type: 'setEnabled',
       enabled: newState
+    }).catch(() => {
+      // No content script in this tab (chrome:// page, web store, or a tab
+      // opened before the extension loaded). Safe to ignore.
     });
   }
 });
