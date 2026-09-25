@@ -6,15 +6,16 @@ Lose track of how far you've read on a web page? Line Highlighter is a browser e
 
 ## How It Works
 
-Press 'Cmd+;' (Mac) or 'Ctrl+;' (Windows/Linux) to activate the highlighter (or use the extension popup), then click on any text on the page. Once you see the highlighter, you can move down or up line by line using the keyboard shortcuts.
+Press `⌘E` (Mac) or `Alt+L` (Windows/Linux) to turn the highlighter on, then click any line of text. Move up or down line by line with the keyboard. The highlight stays on its line while you scroll, including inside scrollable panels.
 
 | Shortcut | Action |
 |----------|--------|
-| `Cmd + ;` (Mac) / `Ctrl + ;` (PC) | Enable/disable Line Highlighter |
+| `⌘E` (Mac) / `Alt+L` (PC) | Turn Line Highlighter on or off |
+| `⌥L` (Mac) / `Alt+H` (PC) | Open the extension popup |
 | `F` | Move to previous line |
 | `V` | Move to next line |
 
-**Note:** All keyboard shortcuts can be customized in the extension popup.
+**Note:** Change `F` and `V` in the extension popup. Change the on/off and popup shortcuts at `chrome://extensions/shortcuts`.
 
 ## Features
 
@@ -47,14 +48,13 @@ Line Highlighter uses the following algorithm to detect and track individual lin
 2. **Line Collection**: For each text node, it:
    - Creates a range and gets all line rectangles
    - Filters out lines that are too small (< 5px height) or too large (> 100px, likely containers)
-   - Stores absolute page positions using `pageYOffset + rect.top`
+   - Skips navigation, sidebar, breadcrumb, and table-of-contents elements by matching whole class names
 
 3. **Deduplication**: Lines at the same vertical position (within 2px) are merged to handle multi-column layouts and inline elements.
 
-4. **Smart Scrolling**: When navigating between lines, the extension:
-   - Updates the highlighter position using absolute page coordinates
-   - Automatically scrolls if the target line is near viewport edges
-   - Uses smooth scrolling for better reading experience
+4. **Line Tracking**: The highlight is anchored to a line (its text node and line index), not to a pixel position. It uses `position: fixed`, and on every scroll it recomputes the line's on-screen rectangle. A capture-phase scroll listener catches scrolling inside inner containers too. A resize that re-wraps text can shift the anchor to a nearby line.
+
+5. **Smart Scrolling**: When you move to a line near the top or bottom edge, the extension calls `scrollIntoView` with smooth scrolling. This works whether the page or an inner container scrolls.
 
 ---
 
