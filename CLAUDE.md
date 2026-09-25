@@ -103,14 +103,16 @@ These require a properly loaded extension in Chrome and should be tested manuall
 4. **Publish**: Merging release PR triggers:
    - Git tag creation
    - GitHub release with extension zip
-   - Chrome Web Store publish (for feat/fix releases)
-   - Auto-sync back to develop
+   - Chrome Web Store upload + submit for review, via `scripts/publish-chrome-store.sh` (API v2)
+   - Auto-sync back to develop (fast-forward; needs develop→master PRs to be merge commits)
+5. **Retry a failed publish**: Actions → Release Please → Run workflow (publishes the latest GitHub release zip)
 
 ### GitHub Secrets Required
+- `CHROME_PUBLISHER_ID`: Publisher ID from Developer Dashboard → Publisher → Settings (kyle.chadha@gmail.com)
 - `CHROME_EXTENSION_ID`: Extension ID from Chrome Web Store
 - `CHROME_CLIENT_ID`: OAuth client ID for Chrome Web Store API
 - `CHROME_CLIENT_SECRET`: OAuth client secret
-- `CHROME_REFRESH_TOKEN`: OAuth refresh token
+- `CHROME_REFRESH_TOKEN`: OAuth refresh token, generated as kyle.chadha@gmail.com with scope `https://www.googleapis.com/auth/chromewebstore`
 
 ## Repository Organization
 - `assets/` - Icon files (PNG format, 128x128)
