@@ -15,12 +15,17 @@ done
 API="https://chromewebstore.googleapis.com"
 ITEM="publishers/${CHROME_PUBLISHER_ID}/items/${CHROME_EXTENSION_ID}"
 
-TOKEN=$(curl -sS --fail-with-body https://oauth2.googleapis.com/token \
+TOKEN_RESPONSE=$(curl -sS https://oauth2.googleapis.com/token \
   -d "client_id=${CHROME_CLIENT_ID}" \
   -d "client_secret=${CHROME_CLIENT_SECRET}" \
   -d "refresh_token=${CHROME_REFRESH_TOKEN}" \
-  -d "grant_type=refresh_token" | jq -r '.access_token // empty')
-[[ -n "$TOKEN" ]] || { echo "Token response had no access_token" >&2; exit 1; }
+  -d "grant_type=refresh_token")
+TOKEN=$(echo "$TOKEN_RESPONSE" | jq -r '.access_token // empty')
+if [[ -z "$TOKEN" ]]; then
+  # Print only the error fields; a success body would contain the token
+  echo "Token request failed: $(echo "$TOKEN_RESPONSE" | jq -c '{error, error_description}')" >&2
+  exit 1
+fi
 echo "::add-mask::${TOKEN}"
 AUTH="Authorization: Bearer ${TOKEN}"
 

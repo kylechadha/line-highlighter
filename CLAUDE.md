@@ -13,7 +13,7 @@ Line Highlighter is a Chrome extension that helps users track their reading posi
 - **src/popup-styles.css**: Styling for the popup interface
 - **src/background.js**: Service worker managing extension state, icon updates, and Chrome commands
 
-## Current Keyboard Shortcuts (v2.2)
+## Current Keyboard Shortcuts
 ### Chrome-Managed Shortcuts (manifest.json)
 - **Mac**: ⌥L (Alt+L) opens popup, ⌘E (Cmd+E) toggles highlighter
 - **Windows/Linux**: Alt+H opens popup, Alt+L toggles highlighter
