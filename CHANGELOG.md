@@ -5,6 +5,16 @@ All notable changes to Line Highlighter will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.3.4](https://github.com/kylechadha/line-highlighter/compare/line-highlighter-v2.3.3...line-highlighter-v2.3.4) (2026-09-25)
+
+
+### Bug Fixes
+
+* add full git history for branch sync ([05028f9](https://github.com/kylechadha/line-highlighter/commit/05028f9f35d5d2863e5cc3f554f1ccf12631a3a7))
+* keep highlight on the correct line when scrolling and navigating ([ae3ea32](https://github.com/kylechadha/line-highlighter/commit/ae3ea32b76b28e43da6b329edbcc7d5840640736))
+* keep highlight on the correct line when scrolling and navigating ([e302887](https://github.com/kylechadha/line-highlighter/commit/e3028872c92a007e6b558f14546ebc27cf36c6c7))
+* swallow expected sendMessage rejection when tab has no content script ([a2d5d4b](https://github.com/kylechadha/line-highlighter/commit/a2d5d4b455f6ab96b6c15ffde205e5b4079a15f3))
+
 ## [2.3.3](https://github.com/kylechadha/line-highlighter/compare/line-highlighter-v2.3.2...line-highlighter-v2.3.3) (2025-09-30)
 
 
